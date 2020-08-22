@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<div th:fragment="head" style="
+position:fixed;top:0px;left:0px;bottom:0px;width:100%;height:50px;background-color:#acffcb;z-index:999;
+">
+
+    <!-- message info tip alert -->
+    <div id="successTip" class="alert alert-success div-style" role="alert">...</div>
+    <div id="errorTip" class="alert alert-danger div-style" role="alert">...</div>
+    <div id="infoTip" class="alert alert-info div-style" role="alert">...</div>
+    <div id="warningTip" class="alert alert-warning div-style" role="alert">...</div>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">角落</span>
+            </button>
+            <a class="navbar-brand" href="/">幻想II</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <form class="navbar-form navbar-left">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="搜索">
+                </div>
+                <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li th:if="${session.user != null}"><a href="/publish">发起话题</a></li>
+                <li class="dropdown" th:if="${session.user != null}">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false" ><span th:text="${session.user.getName()}"></span><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a id="bt_toAccount" href="#" th:name="${session.user.account}" onclick="toAccount(this.name)">个人资料</a></li>
+                        <li><a href="/profile/questions">我的话题</a></li>
+                        <li><a href="/">Help</a></li>
+                        <li><a href="/logout">登出</a></li>
+                    </ul>
+                </li>
+                <li th:if="${session.user != null}"><div class="media-left">
+                    <a href="#">
+                        <img th:src="${session.user.avatarUrl}" alt="" class="img-rounded media-object" style="margin: 3px">
+                    </a>
+                </div></li>
+                <!--GITHUB账号关联登录URL： https://github.com/login/oauth/authorize?client_id=7850db15468cc2a16d28&redirect_uri=http://localhost:8080/callback&scope=user&state=1-->
+                <li th:if="${session.user == null}"><a href="/login">登录</a></li>
+                <li th:if="${session.user == null}"><a href="/regAccount">注册</a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+</div>
+
+<div th:fragment="info" class="container-fluid main-color" style="text-align:center;line-height:30px;position:fixed;bottom:0;left:0;right:0">
+    &copy;测试测试测试
+</div>
+
+</body>
+</html>

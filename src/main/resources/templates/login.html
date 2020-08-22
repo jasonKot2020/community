@@ -1,0 +1,176 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>登录与注册</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script src="/js/jquery-3.3.1.js" type="application/javascript"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/community.css">
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+    <script src="/js/community.js" type="application/javascript"></script>
+</head>
+<script type="application/javascript">
+    $(function () {
+        //请求公告
+        $.ajax({
+            url:"/getContent",
+            type : 'GET',
+            dataType : 'json',
+            timeout : 500000,
+            success:function (rel) {
+                if(rel.code == 200){
+                    $("#title").text(rel.data.title);
+                    $("#content").text(rel.data.content);
+                }
+            }
+        });
+    })
+
+    function request(type) {
+        var url = "/login";
+        var fromId = "#loginForm";
+        if(type == 2){url = "/regAccount";fromId = "#regForm";}
+        $.ajax({
+            url: url ,
+            type: "POST",
+            dataType: "json",
+            data: $(fromId).serialize(),
+            success: function (rel) {
+                if (rel.code == 200 || rel.code == 0000 || rel.code == 0001) {
+                    if(rel.code == 0000){
+                        //注册成功
+                        $("#type2").hide();
+                        $("#type6").fadeIn(500);
+                        window.setTimeout(function () {
+                            window.location.href="/";
+                        },3000);
+                    }else{
+                        //登录跳转
+                        window.location.href = "/";
+                    }
+                }else{
+                    showTip(rel.message,"error");
+                };
+            }
+        });
+    }
+</script>
+<body>
+<div th:insert="~{navigation::head}"></div>
+
+<!--Tip-->
+<div class="col-lg-5 col-md-12 col-sm-12 col-xs-12"></div>
+<div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+    <div id="errorTip" class="alert alert-danger col-lg-9 col-md-12 col-sm-12 col-xs-12" style="display: none;"></div>
+</div>
+
+<div class="container-fluid main-no-color-2">
+    <div class="row">
+        <div class="col-lg-1 col-md-12 col-sm-12 col-xs-12"></div>
+        <div class="col-lg-5 col-md-12 col-sm-12 col-xs-12">
+            <div class="jumbotron" style="text-align:center;line-height:30px;">
+                <h3 id="title"></h3>
+                <p id="content"></p>
+            </div>
+        </div>
+
+        <!--登录模块-->
+        <li id="type1" class="li" th:if="${type == 1}">
+            <div class="col-lg-5 col-md-12 col-sm-12 col-xs-12 main-color">
+                <h2>
+                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span> 登录账号
+                </h2>
+                <hr>
+                <form id="loginForm" action="/login" method="post">
+                    <div class="input-group col-lg-6 ">
+                        <span class="input-group-addon" >账号</span>
+                        <input name="account" type="text" class="form-control" placeholder="用户名(6~16位)" aria-describedby="basic-addon1" maxlength="16">
+                    </div>
+                    <hr>
+                    <div class="input-group col-lg-6 ">
+                        <span class="input-group-addon" >密码</span>
+                        <input name="pass" type="password" class="form-control" placeholder="字母+数字(6~18位)" aria-describedby="basic-addon1" maxlength="18">
+                    </div>
+                    <hr>
+                    <button type="button" onclick="request(1)" class="btn btn-success">登录</button>
+                        <a href="https://github.com/login/oauth/authorize?client_id=7850db15468cc2a16d28&redirect_uri=http://localhost:8080/callback&scope=user&state=1" type="button" class="btn btn-success">
+                            GitHub Login
+                        </a>
+                        <a href="/regAccount" type="button" class="btn btn-link">>注册账号</a>
+                        <button type="button" class="btn btn-link">忘记密码?</button>
+                    <hr>
+                </form>
+            </div>
+        </li>
+
+        <!--注册模块-->
+        <li id="type2" class="li" th:if="${type == 2}">
+            <div class="col-lg-5 col-md-12 col-sm-12 col-xs-12 main-color">
+                <form id="regForm" action="/regAccount" method="post">
+                    <h2>
+                        <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 注册
+                    </h2>
+                    <hr>
+                    <div class="input-group col-lg-6 ">
+                        <span class="input-group-addon" >账户昵称</span>
+                        <input name="name" type="text" class="form-control" placeholder="昵称(2~12个字母)" AutoComplete="off"  maxlength="16">
+                    </div>
+                    <hr>
+                    <div class="input-group col-lg-6 ">
+                        <span class="input-group-addon" >登录账号</span>
+                        <input name="account" type="text" class="form-control" placeholder="用户名(6~16位)" AutoComplete="off"  maxlength="16">
+                    </div>
+                    <hr>
+                    <div class="input-group col-lg-6 ">
+                        <span class="input-group-addon" >登录密码</span>
+                        <input name="pass" type="password" class="form-control" placeholder="字母+数字(6~18位)" AutoComplete="off" maxlength="18">
+                    </div>
+                    <hr>
+                    <div class="input-group col-lg-6 ">
+                        <span class="input-group-addon" >确认密码</span>
+                        <input name="checkPass" type="password" class="form-control" placeholder="字母+数字(6~18位)" AutoComplete="off" maxlength="18">
+                    </div>
+                    <hr>
+                    <button type="button" onclick="request(2)" class="btn btn-success">注册账号</button>
+                        <a href="/login" type="button" class="btn btn-link">已有账号?</a>
+                        <button id="removeRegInfo" type="reset" style="display:none;"></button>
+                            <hr>
+                </form>
+            </div>
+        </li>
+
+        <!--找回密码模块-->
+        <li id="type3" class="li" th:if="${type == 3}">
+            <div class="col-lg-5 col-md-12 col-sm-12 col-xs-12 main-color">
+                <h2>
+                    <span class="glyphicon glyphicon-list" aria-hidden="true"></span> 找回密码
+                </h2>
+                <hr>
+                <div class="input-group col-lg-6 ">
+                    <span class="input-group-addon" >问题找回</span>
+                    <input name="account" type="text" class="form-control" placeholder="用户名(6~16位)" AutoComplete="off"  maxlength="16">
+                </div>
+                <hr>
+                <button type="button" class="btn btn-default">找回密码</button>
+                    <a href="/login" type="button" class="btn btn-link">重试登录?</a>
+                    <hr>
+            </div>
+        </li>
+
+        <li id="type6" style="display: none;" class="li" >
+            <div class="col-lg-5 col-md-12 col-sm-12 col-xs-12 main-no-color-2">
+                <h2>
+                    <span class="glyphicon glyphicon-list" aria-hidden="true"></span> 注册成功！(3s后跳转...)
+                </h2>
+                <a href="/" >(立即跳转)</a>
+                </h2>
+            </div>
+        </li>
+    </div>
+</div>
+
+<div th:insert="~{navigation::info}"></div>
+
+</body>
+</html>

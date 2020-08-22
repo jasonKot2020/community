@@ -1,0 +1,154 @@
+body{
+    background-color: #efefef;
+}
+
+.main-no-color{
+    margin: 65px;
+}
+
+.main-no-color-2{
+    margin: 93px;
+}
+
+.main-color{
+    background-color: white;
+}
+
+.main{
+    margin: 65px;
+    background-color: white;
+}
+
+.main2{
+    margin: 93px;
+    background-color: white;
+}
+
+.btn-publish{
+    float: right;
+    margin-bottom: 15px;
+}
+
+.media-object{
+    width:40px;
+    height: 40px;
+}
+
+.text-desc {
+    font-size: 12px;
+    font-weight: normal;
+    color: #999;
+}
+
+.profile .section{
+    margin: 15px;
+}
+
+.media-body {
+    padding: 10px;
+}
+
+.community-menu {
+    display: block;
+    color: #999;
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+.jumbotron {
+    margin: 50px 10px;
+}
+
+.comment {
+    margin: 10px 0;
+}
+
+.btn-comment {
+    float: right;
+    margin-bottom: 10px;
+}
+
+.comment-sp{
+    margin-top: 0;
+}
+
+.comments {
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    margin-top: 15px;
+}
+
+.sub-comments{
+    border-radius: 5px;
+    margin-top: 15px;
+    border: 1px solid #eee;
+    padding-top: 15px;
+}
+
+.sub-comments .btn {
+    margin: 10px 0;
+}
+
+.menu {
+    color: #999;
+    margin-top: 5px;
+}
+.menu .icon {
+    float: left;
+    margin-right: 6px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.menu .active{
+    color: #499ef3;
+}
+
+.menu .icon:hover {
+    color: #499ef3;
+}
+
+.li {
+    list-style:none;
+}
+
+/*
+悬浮居中
+ */
+.div-style{
+    position:fixed;
+
+    margin: auto;
+
+    left:0;
+
+    right: 0;
+
+    top: 0;
+
+    bottom: 80%;
+
+    background-color:black;
+
+    width:400px;
+
+    height:45px;
+
+    text-align: center;
+
+    z-index:9999;
+
+    position: fixed;
+
+    display: none;
+}
+
+/*
+DIV背景图片
+ */
+.img-by-div{
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    background-image: url(../imgs/div.jpg);
+}
