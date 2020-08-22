@@ -28,9 +28,10 @@ public class IndexController {
                 if(qt.getTitle().length() > 50){
                     qt.setTitle(qt.getTitle().substring(0,50)+"...");
                 }
-                if(qt.getDescription().length() > 200){
-                    qt.setDescription(qt.getDescription().substring(0,200)+"[全文请进贴查阅]");
-                }
+//                if(qt.getDescription().length() > 200){
+//                    qt.setDescription(qt.getDescription().substring(0,200)+"[全文请进贴查阅]");
+//                }
+                qt.setDescription(qt.getTag());
             }
         }
         model.addAttribute("pagination", pagination);

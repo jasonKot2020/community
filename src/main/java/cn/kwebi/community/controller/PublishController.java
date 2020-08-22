@@ -4,13 +4,11 @@ import cn.kwebi.community.dto.QuestionDTO;
 import cn.kwebi.community.model.Question;
 import cn.kwebi.community.model.User;
 import cn.kwebi.community.service.QuestionService;
+import cn.kwebi.community.util.JsonMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -22,8 +20,17 @@ public class PublishController {
 
     @GetMapping("/publish/{id}")
     public String edit(@PathVariable(name = "id") Integer id,
+                       HttpServletRequest request,
                        Model model){
         QuestionDTO question = questionService.getById(id);
+        if(id != null && question != null){
+            //判断是否为自己的贴子
+            QuestionDTO qt = questionService.getById(id);
+            User u = (User) request.getSession().getAttribute("user");
+            if(!qt.getCreator().equals(u.getId())){
+                return "redirect:/";
+            }
+        }
         model.addAttribute("title", question.getTitle());
         model.addAttribute("description", question.getDescription());
         model.addAttribute("tag", question.getTag());
@@ -39,7 +46,7 @@ public class PublishController {
     @PostMapping("/publish")
     public String doPublish(
             @RequestParam(value = "title", required = false) String title,
-            @RequestParam(value = "description", required = false) String description,
+            @RequestParam(value = "content", required = false) String description,
             @RequestParam(value = "tag", required = false) String tag,
             @RequestParam(value = "id",required = false) Integer id,
             HttpServletRequest request,
@@ -66,6 +73,28 @@ public class PublishController {
 
         question.setId(id);
         questionService.createOrUpdate(question);
+        if(id != null){
+            model.addAttribute("contextId", id);
+            return "publish";
+        }
         return "redirect:/";
+    }
+
+    /*
+    删除指定ID的帖子
+     */
+    @ResponseBody
+    @GetMapping("/del/{id}")
+    public Object del(@PathVariable String id,HttpServletRequest request) {
+        return JsonMessage.success();
+    }
+
+    /*
+    订阅star
+     */
+    @ResponseBody
+    @GetMapping("/star/{id}")
+    public Object star(@PathVariable String id,HttpServletRequest request) {
+        return JsonMessage.success();
     }
 }

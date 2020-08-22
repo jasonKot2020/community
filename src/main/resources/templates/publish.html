@@ -7,20 +7,47 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/css/community.css">
+
+    <link rel="stylesheet" href="/js/kindeditor/themes/default/default.css" />
+
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
     <script src="/js/community.js" type="application/javascript"></script>
+
+    <script charset="utf-8" src="/js/kindeditor/kindeditor-min.js"></script>
+    <script charset="utf-8" src="/js/kindeditor/lang/zh_CN.js"></script>
+
     <script type="application/javascript">
         $(function () {
             var message = $("#error").text();
             if(message != ''){
                 showTip(message,"error");
             }
+
+            var id = $("#contextId").text();
+            if (id != ''){
+                window.location.href = "/question/" + id;
+            }
         })
+
+        var editor;
+        KindEditor.ready(function(K) {
+            editor = K.create('textarea[name="content"]', {
+                resizeType : 1,
+                allowPreviewEmoticons : false,
+                allowImageUpload : false,
+                items : [
+                    'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+                    'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+                    'insertunorderedlist', '|', 'emoticons', 'image', 'link']
+            });
+        });
     </script>
 </head>
 <body>
 
 <div th:insert="~{navigation::head}"></div>
+
+<span id="contextId" th:text="${contextId}" style="display: none;"></span>
 
 <!--Tip-->
 <li class="li" th:if="${error != ''}">
@@ -48,7 +75,8 @@
                         </div>
                         <div class="form-group">
                             <label for="title">内容</label>
-                            <textarea name="description" id="description" cols="30" rows="10" class="form-control" th:text="${description}"></textarea>
+                            <!--<textarea name="description" id="description" cols="30" rows="10" class="form-control" th:text="${description}"></textarea>-->
+                            <textarea name="content" id="description" cols="50" rows="10" class="form-control" th:text="${description}" style="height:400px;"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="title">添加标签</label>
