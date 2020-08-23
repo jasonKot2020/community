@@ -76,17 +76,11 @@
                 <a href="/profile/replies" th:class="${section == 'replies'} ? 'active list-group-item':'list-group-item'">
                     最新回复<span th:text="${totalCount}" class="badge"></span>
                 </a>
-            </div>
-
-        </div>
-
-        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-            <div class="list-group section">
                 <a href="/profile/collect" th:class="${section == 'collect'} ? 'active list-group-item':'list-group-item'">我的收藏</a>
                 <a href="/profile/likePost" th:class="${section == 'likePost'} ? 'active list-group-item':'list-group-item'">点赞过的</a>
             </div>
-
         </div>
+
     </div>
 </div>
 
