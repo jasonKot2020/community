@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>角落-首页</title>
+    <title>War3 ORPG Map - 首页</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <script src="/js/jquery-3.3.1.js" type="application/javascript"></script>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="/css/community.css">
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
     <script src="/js/community.js" type="application/javascript"></script>
+    <script charset="utf-8" src="/js/kindeditor/kindeditor-min.js"></script>
+    <script charset="utf-8" src="/js/kindeditor/lang/zh_CN.js"></script>
 </head>
 <script type="application/javascript">
     window.onload = function () {
@@ -34,6 +36,19 @@
         $('#myModalLabel').html(title);
         $('#myModalContent').html(tip);
     }
+
+    var editor;
+    KindEditor.ready(function(K) {
+        editor = K.create('textarea[name="content"]', {
+            resizeType : 0,
+            allowPreviewEmoticons : false,
+            allowImageUpload : false,
+            items : [
+                'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+                'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+                'insertunorderedlist', '|', 'emoticons']
+        });
+    });
 </script>
 <body>
 <div th:insert="~{navigation::head}"></div>
@@ -137,31 +152,32 @@
             </nav>
         </div>
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-            <!--<h3>地图动态</h3>-->
-            <!--<hr>-->
 
-            <div th:if="${session.user != null}" class="panel panel-default">
-                <div class="panel-heading">吐槽</div>
-                <div class="panel-body">
-                    <textarea class="form-control comment" rows="3" id="comment_content"></textarea>
+            <ol class="breadcrumb">
+                <li><a id="menu_a" href="#">吐槽</a></li>
+                <li id="menu_b" class="active">展示最新5条动态</li>
+            </ol>
 
-                    <button type="button" class="btn btn-success btn-comment" onclick="">发布</button>
-                    <button type="button" class="btn btn-comment btn-comment" onclick="">重置</button>
-                </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">社区吐槽</div>
-                <div class="panel-body">
-
-                    <div class="panel panel-default">
-                        <div class="panel-heading">account</div>
-                        <div class="panel-body">
-                            content
-                        </div>
+            <div class="form-group">
+                <div class="panel panel-default">
+                    <div class="panel-heading">admin说：</div>
+                    <div class="panel-body">
+                        <img src="http://localhost:8080/js/kindeditor/plugins/emoticons/images/18.gif" border="0"> ​​
+                        这个地图要TJ了！！！
                     </div>
-
                 </div>
             </div>
+
+            <form action="/publish" method="post">
+                <div th:if="${session.user != null}" class="panel panel-default">
+                    <div class="panel-heading">我要吐槽
+                        <button type="submit" class="navbar-right">发布</button>
+                    </div>
+                    <input id="nowId" name="id" type="hidden" th:value="${id}">
+                    <textarea name="content" id="description" rows="3" class="form-control" style="height:100px;width:100%;border:none;outline:none;"></textarea>
+                </div>
+            </form>
+
         </div>
     </div>
 </div>

@@ -1,4 +1,20 @@
 /*
+导航栏跳转
+ */
+function setTopUrl(type,url) {
+    if($("#activeBut"+type).hasClass('active')){
+        console.log(type)
+        return;
+    }
+    /*
+    0首页
+    1介绍
+    2下载
+     */
+    window.location.href = url;
+}
+
+/*
 tip box
  */
 function showTip(mes,type,showTime) {

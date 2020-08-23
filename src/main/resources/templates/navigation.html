@@ -18,9 +18,9 @@ position:fixed;top:0px;left:0px;bottom:0px;width:100%;height:50px;background-col
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
                     data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                <span class="sr-only">隐秘</span>
+                <span class="sr-only">war3-魔兽争霸3-魔兽地图-war3 Map-ORPG</span>
             </button>
-            <a class="navbar-brand" href="/">角落</a>
+            <a class="navbar-brand" href="/">War3 ORPG Map</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -31,8 +31,32 @@ position:fixed;top:0px;left:0px;bottom:0px;width:100%;height:50px;background-col
                 </div>
                 <button type="submit" class="btn btn-default">Submit</button>
             </form>
+
+            <ul class="nav navbar-nav navbar-left">
+                <li class="dropdown" th:onclick="setTopUrl(0,'/')">
+                    <a id="activeBut0" href="#" th:class="${activeType == 0 ? 'dropdown-toggle btn active' : 'dropdown-toggle btn'}"
+                       class="dropdown-toggle btn " data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false" ><span class="glyphicon glyphicon-object-align-top"></span><span>首页</span></a>
+                </li>
+                <li class="dropdown" onclick="setTopUrl(1,'/')">
+                    <a id="activeBut1" href="#" th:class="${activeType == 1 ? 'dropdown-toggle btn active' : 'dropdown-toggle btn'}"
+                       class="dropdown-toggle btn " data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false" ><span class="glyphicon glyphicon-list-alt"></span><span>介绍</span></a>
+                </li>
+                <li class="dropdown" onclick="setTopUrl(2,'/')">
+                    <a id="activeBut2" href="#" th:class="${activeType == 2 ? 'dropdown-toggle btn active' : 'dropdown-toggle btn'}"
+                       class="dropdown-toggle btn " data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false" ><span class="glyphicon glyphicon-download-alt"></span><span>下载Map</span></a>
+                </li>
+                <li class="dropdown" onclick="setTopUrl(9,'/')">
+                    <a id="activeBut9" href="#" th:class="${activeType == null ? 'dropdown-toggle btn active' : 'dropdown-toggle btn'}"
+                       class="dropdown-toggle btn " data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false" ><span class="glyphicon glyphicon-th-large"></span><span>社区</span></a>
+                </li>
+            </ul>
+
             <ul class="nav navbar-nav navbar-right">
-                <li th:if="${session.user != null}"><a href="/publish">发起话题</a></li>
+                <li th:if="${session.user != null}"><a class="btn" href="/publish">发起话题</a></li>
                 <li class="dropdown" th:if="${session.user != null}">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false" ><span th:text="${session.user.getName()}"></span><span class="caret"></span></a>
