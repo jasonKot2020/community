@@ -49,8 +49,8 @@ public class QuestionService {
         return paginationDTO;
     }
 
-    public PaginationDTO list(Integer id, Integer page, Integer size) {
-        Integer totalCount = questionMapper.countByUserId(id);
+    public PaginationDTO list(Integer id, Integer page, Integer size,String action) {
+        Integer totalCount = action.equals("replies") ? questionMapper.totalCount(id) : questionMapper.countByUserId(id);
         PaginationDTO paginationDTO = new PaginationDTO();
 
         if (page < 1) page = 1;
@@ -59,7 +59,7 @@ public class QuestionService {
         Integer offset = size*(page-1);
         if(offset<0)offset=0;
         paginationDTO.setPagination(totalPage,page);
-        List<Question> list = questionMapper.listByUserId(id,offset,size);
+        List<Question> list = action.equals("replies") ? questionMapper.listByCount(id,offset,size) : questionMapper.listByUserId(id,offset,size);
         List<QuestionDTO> questionDTOList = new ArrayList<>();
 
         for(Question question: list){
@@ -108,5 +108,9 @@ public class QuestionService {
 
     public void incView(Integer id) {
         questionMapper.incViewCount(id);
+    }
+
+    public Integer totalCount(Integer id) {
+        return questionMapper.totalCount(id);
     }
 }

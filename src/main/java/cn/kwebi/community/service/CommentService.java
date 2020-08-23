@@ -83,4 +83,8 @@ public class CommentService {
         return commentDTOS;
     }
 
+    public void updateLookStatus(Integer id){
+        commentMapper.updateLookStatus(id);
+    }
+
 }

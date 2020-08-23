@@ -19,4 +19,7 @@ public interface CommentMapper {
 
     @Update("update comment set comment_count = comment_count+1 where id=#{id}")
     void incCommentCount(@Param(value = "id") Integer id);
+
+    @Update("update comment set look_status = 1 where PARENT_ID=#{id}")
+    void updateLookStatus(@Param(value = "id") Integer id);
 }

@@ -13,6 +13,7 @@ public class Comment {
     private Long likeCount;
     private String content;
     private Long CommentCount;
+    private Integer lookStatus;
 
     public Integer getId() {
         return id;
@@ -84,5 +85,13 @@ public class Comment {
 
     public void setCommentCount(Long commentCount) {
         CommentCount = commentCount;
+    }
+
+    public Integer getLookStatus() {
+        return lookStatus;
+    }
+
+    public void setLookStatus(Integer lookStatus) {
+        this.lookStatus = lookStatus;
     }
 }

@@ -33,7 +33,12 @@ public class QuestionController {
     public String question(@PathVariable("id") Integer id,
                            HttpServletRequest request,
                            Model model){
+        User user = (User) request.getSession().getAttribute("user");
+
         QuestionDTO questionDTO = questionService.getById(id);
+        if(user != null && questionDTO.getCreator().equals(user.getId())){
+            commentService.updateLookStatus(id);
+        }
 
         List<CommentDTO> comments = commentService.listByParentId(id, CommentTypeEnum.QUESTION);
 
@@ -41,7 +46,6 @@ public class QuestionController {
         model.addAttribute("question",questionDTO);
         model.addAttribute("comments",comments);
 
-        User user = (User)request.getSession().getAttribute("user");
         if (user != null) {
             model.addAttribute("user",user);
         }else{

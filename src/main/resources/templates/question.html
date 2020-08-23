@@ -71,7 +71,8 @@
                             <div th:text="${comment.content}"></div>
                             <div class="menu">
                                 <!--点赞requestJson('get','/likePost',${user.id},${comment.id})-->
-                                <span th:text="${comment.likeCount}" th:onclick="'JavaScript:requestAjax(this,\'get\',\'/likePost\',\'accountId,id\',\''+${user.id}+','+${comment.id}+'\')'" class="glyphicon glyphicon-thumbs-up icon"></span>
+                                <span th:if="${session.user != null}" th:text="${comment.likeCount}" th:onclick="'JavaScript:requestAjax(this,\'get\',\'/likePost\',\'accountId,id\',\''+${user.id}+','+${comment.id}+'\')'" class="glyphicon glyphicon-thumbs-up icon"></span>
+                                <span th:if="${session.user == null}" th:text="${comment.likeCount}" class="glyphicon glyphicon-thumbs-up icon"></span>
                                 <div class="icon" >
                                 <span class="glyphicon glyphicon-comment" th:data-id="${comment.id}"
                                       onclick="collapseComments(this)">
@@ -100,7 +101,6 @@
             <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <!--回复输入框-->
             <div class="media col-lg-12 col-md-12 col-sm-12 col-xs-12" id="comment_section">
-                <li class="li" th:if="${session.user != null}">
                 <div class="media-left" th:if="${user!=null}">
                     <a href="#">
                         <img th:src="${user.avatarUrl}" alt="" class="img-rounded media-object">
@@ -111,7 +111,7 @@
                         <span th:text="${user.name}"></span>
                     </h5>
                 </div>
-                <input type="hidden" th:value="${question.id}" id="question_id"></li>
+                <input type="hidden" th:value="${question.id}" id="question_id">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <textarea th:if="${session.user != null}" class="form-control comment" rows="6" id="comment_content"></textarea>
                     <textarea th:if="${session.user == null}" class="form-control comment" rows="6" id="comment_content">请先登录！</textarea>
