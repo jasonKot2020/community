@@ -20,11 +20,6 @@
     }
 
     $(function () {
-        console.log(JSON.stringify({
-            "parentId": targetId,
-            "content": content,
-            "type": type
-        }))
         $("#tip").show();
     });
 
@@ -145,7 +140,7 @@
             <!--<h3>地图动态</h3>-->
             <!--<hr>-->
 
-            <div class="panel panel-default">
+            <div th:if="${session.user != null}" class="panel panel-default">
                 <div class="panel-heading">吐槽</div>
                 <div class="panel-body">
                     <textarea class="form-control comment" rows="3" id="comment_content"></textarea>

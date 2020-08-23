@@ -3,7 +3,9 @@ package cn.kwebi.community.service;
 import cn.kwebi.community.mapper.LikePostMapper;
 import cn.kwebi.community.util.JsonMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class LikePostService {
 
     @Autowired
@@ -21,10 +23,11 @@ public class LikePostService {
         if(likePostMapper.check(accountId,id) > 0){
             likePostMapper.delete(accountId,id);
             likePostMapper.setLikeCount(id,-1);
-            return JsonMessage.success("取消点赞~");
+            return JsonMessage.error("取消点赞~");
         }else{
+            likePostMapper.create(accountId,id);
             likePostMapper.check(accountId,id);
-            likePostMapper.setLikeCount(id,-1);
+            likePostMapper.setLikeCount(id,1);
             return JsonMessage.success("成功点赞~");
         }
 

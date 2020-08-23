@@ -32,6 +32,10 @@ public class JsonMessage {
         return JsonUtil.obj2String(new JsonMessage(SUCCESS_CORD,SUCCESS_MESSAGE,obj));
     }
 
+    public static Object success(String message){
+        return JsonUtil.obj2String(new JsonMessage(SUCCESS_CORD,message,null));
+    }
+
     public static Object success(String message, Object obj){
         return JsonUtil.obj2String(new JsonMessage(SUCCESS_CORD,message,obj));
     }

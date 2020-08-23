@@ -39,7 +39,12 @@ public class PublishController {
     }
 
     @GetMapping("/publish")
-    public String publish() {
+    public String publish(HttpServletRequest request,Model model) {
+        User u = (User) request.getSession().getAttribute("user");
+        if (u == null) {
+            model.addAttribute("type",1);
+            return "/login";
+        }
         return "publish";
     }
 

@@ -2,20 +2,19 @@
 tip box
  */
 function showTip(mes,type,showTime) {
-    console.log(showTime);
     var tipId = "#"+type+"Tip";
 
     $(tipId).text(mes);
 
-    $(tipId).fadeIn(1000);
+    $(tipId).fadeIn(500);
 
-    if(showTime < 2000 || showTime == null){
-        showTime = 5000;
+    if(showTime == null || showTime < 2000){
+        showTime = 3000;
     }
 
     window.setTimeout(function () {
-        $("#errorTip").fadeOut(1000);
-    },(showTime-1000));
+        $(tipId).fadeOut(500);
+    },(showTime-500));
 }
 
 /*
@@ -167,15 +166,17 @@ function commentToCommentator(id,commentId) {
 }
 
 //ajax.post
-function ajaxPost(url, str, val) {
-    var strArray = str.print(",");
-    var valArray = val.print(",");
-    for(k in str){
-
+function requestAjax(t,method,url, str, val) {
+    var channelUrl = url;
+    var json = "";
+    if(method == "get"){
+        url += "?" + toGetStr(str,val);
+    }else{
+        json = toJson(str,val);
     }
     $.ajax({
         url: url,
-        type: "POST",
+        type: method,
         dataType: "json",
         contentType: "application/json",
         data: json,
@@ -185,7 +186,55 @@ function ajaxPost(url, str, val) {
             }else{
                 showTip(rel.message,"error");
             };
+            if(t != null)
+                channelSetting(t,rel,channelUrl);
         }
     });
+}
+
+function toJson(str,val) {
+    str = ""+str;
+    val = ""+val;
+    var strArray = str.split(",");
+    var valArray = val.split(",");
+    var json = "{";
+    for(k in strArray){
+        json += "'"+ strArray[k] +"':"+valArray[k]+",";
+    }
+    json.substr(0,json.length - 1);
+    json += "}";
+    return json;
+}
+
+function toGetStr(str,val) {
+    str = ""+str;
+    val = ""+val;
+    var strArray = str.split(",");
+    var valArray = val.split(",");
+    var url = "";
+    for(k in strArray){
+        url += strArray[k]+"="+valArray[k]+"&";
+    }
+    url.substr(0,url.length - 1);
+    return url;
+}
+
+/**
+ * 接口请求成功后的页面补充效果（比如点赞后页面数值+1）
+ * @param t
+ * @param rel
+ * @param url
+ */
+function channelSetting(t,rel,url) {
+
+    //点赞
+    if(url == "/likePost"){
+        var count = $(t).text();
+        if(rel.code == 200){
+            $(t).text(parseInt(count)+1);
+        }else{
+            $(t).text(parseInt(count)-1);
+        }
+    }
 }
 

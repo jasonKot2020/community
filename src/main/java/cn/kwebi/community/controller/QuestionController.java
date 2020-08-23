@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,10 +51,10 @@ public class QuestionController {
     }
 
     @ResponseBody
-    @GetMapping("/likePost/{id}")
+    @GetMapping("/likePost")
     public Object like(HttpServletRequest request,
-                       @PathVariable Integer accountId,
-                       @PathVariable Integer id){
+                       @RequestParam(name = "accountId", required = false) Integer accountId,
+                       @RequestParam(name = "id", required = false) Integer id){
         return likePostService.LikePost(accountId,id);
     }
 }

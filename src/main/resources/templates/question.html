@@ -19,12 +19,12 @@
 <div th:insert="~{navigation::head}"></div>
 
 <div class="container-fluid profile main">
-    <div class="row">
+    <li class="row li">
 
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <ol class="breadcrumb">
-                <li><a href="/">Home</a></li>
-                <li class="active">话题</li>
+                <li class="li"><a href="/">Home</a></li>
+                <li class="active li">话题</li>
             </ol>
         </div>
 
@@ -70,8 +70,8 @@
                             </h5>
                             <div th:text="${comment.content}"></div>
                             <div class="menu">
-                                <!--点赞-->
-                                <span class="glyphicon glyphicon-thumbs-up icon"></span>
+                                <!--点赞requestJson('get','/likePost',${user.id},${comment.id})-->
+                                <span th:text="${comment.likeCount}" th:onclick="'JavaScript:requestAjax(this,\'get\',\'/likePost\',\'accountId,id\',\''+${user.id}+','+${comment.id}+'\')'" class="glyphicon glyphicon-thumbs-up icon"></span>
                                 <div class="icon" >
                                 <span class="glyphicon glyphicon-comment" th:data-id="${comment.id}"
                                       onclick="collapseComments(this)">
@@ -83,7 +83,7 @@
                                       th:text="${#dates.format(comment.gmtCreate,'yyyy-MM-dd HH:mm')}"></span>
                             </div>
                             <!--二级评论-->
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 collapse sub-comments"
+                            <div th:if="${session.user != null}" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 collapse sub-comments"
                                  th:id="${'comment-'+comment.id}">
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <input type="text" class="form-control" placeholder="评论一下..."
@@ -100,6 +100,7 @@
             <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <!--回复输入框-->
             <div class="media col-lg-12 col-md-12 col-sm-12 col-xs-12" id="comment_section">
+                <li class="li" th:if="${session.user != null}">
                 <div class="media-left" th:if="${user!=null}">
                     <a href="#">
                         <img th:src="${user.avatarUrl}" alt="" class="img-rounded media-object">
@@ -110,11 +111,12 @@
                         <span th:text="${user.name}"></span>
                     </h5>
                 </div>
-                <input type="hidden" th:value="${question.id}" id="question_id">
+                <input type="hidden" th:value="${question.id}" id="question_id"></li>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <textarea class="form-control comment" rows="6" id="comment_content"></textarea>
+                    <textarea th:if="${session.user != null}" class="form-control comment" rows="6" id="comment_content"></textarea>
+                    <textarea th:if="${session.user == null}" class="form-control comment" rows="6" id="comment_content">请先登录！</textarea>
                 </div>
-                <button type="button" class="btn btn-success btn-comment" onclick="post()">回复</button>
+                <button th:if="${session.user != null}" type="button" class="btn btn-success btn-comment" onclick="post()">回复</button>
             </div>
         </div>
         <!--        右边信息块-->

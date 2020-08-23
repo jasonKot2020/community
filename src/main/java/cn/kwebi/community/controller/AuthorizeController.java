@@ -6,19 +6,21 @@ import cn.kwebi.community.mapper.UserMapper;
 import cn.kwebi.community.model.User;
 import cn.kwebi.community.provider.GithubProvider;
 import cn.kwebi.community.service.UserService;
+import cn.kwebi.community.util.ImageUtil;
 import cn.kwebi.community.util.JsonMessage;
+import cn.kwebi.community.util.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -45,7 +47,7 @@ public class AuthorizeController {
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,
                            @RequestParam(name = "state") String state,
-                           HttpServletResponse response) {
+                           HttpServletResponse response) throws Exception {
         String accessTocken;
         AccessTockenDTO accessTockenDTO = new AccessTockenDTO();
         accessTockenDTO.setCode(code);
@@ -82,6 +84,7 @@ public class AuthorizeController {
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         request.getSession().removeAttribute("user");
+        request.getSession().removeAttribute("validateCode");
         Cookie cookie = new Cookie("token", null);
         cookie.setMaxAge(0);
         response.addCookie(cookie);
@@ -109,7 +112,8 @@ public class AuthorizeController {
     public Object login(
             @RequestParam(name = "account", required = false) String account,
             @RequestParam(name = "pass", required = false) String password,
-            HttpServletRequest request, HttpServletResponse response, Model model) {
+            @RequestParam(name = "code", required = false) String code,
+            HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 
         if(account == null || password == null || account.equals("") || password.equals("")){
             return JsonMessage.error("请认真填写！");
@@ -120,8 +124,14 @@ public class AuthorizeController {
             return JsonMessage.error("账号或密码错误！");
         }
         //密码错误
-        if(userMapper.checkUserPassword(account,password).equals(0)){
+        if(userMapper.checkUserPassword(account,MD5Util.encode(password)).equals(0)){
             return JsonMessage.error("账号或密码错误！");
+        }
+
+        //validateCode
+        String validateCode = (String) request.getSession().getAttribute("validateCode");
+        if(!validateCode.equals(code)){
+            return JsonMessage.error("验证码错误！");
         }
 
         request.getSession().setAttribute("user",user);//用户信息
@@ -155,7 +165,8 @@ public class AuthorizeController {
             @RequestParam(name = "account", required = false) String account,
             @RequestParam(name = "pass", required = false) String password,
             @RequestParam(name = "checkPass", required = false) String checkPass,
-            HttpServletRequest request, HttpServletResponse response, Model model) {
+            @RequestParam(name = "code", required = false) String code,
+            HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 
         if(account == null || password == null || checkPass == null ||
         account.equals("") || password.equals("") || checkPass.equals("")
@@ -170,6 +181,12 @@ public class AuthorizeController {
         //是否已注册
         if(u != null){
             return JsonMessage.error("["+account+"]该账号已被注册！");
+        }
+
+        //validateCode
+        String validateCode = (String) request.getSession().getAttribute("validateCode");
+        if(!validateCode.equals(code)){
+            return JsonMessage.error("验证码错误！");
         }
 
         User user = new User();
@@ -208,5 +225,25 @@ public class AuthorizeController {
         model.addAttribute("type", type);
         model.addAttribute("error", message);
         return url;
+    }
+
+    //生成验证码图片
+    @ResponseBody
+    @RequestMapping(value = "/validateCode", method = RequestMethod.GET)
+    public void validateCode(HttpServletRequest request, HttpServletResponse response) throws Exception{
+        //第一个参数是生成的验证码，第二个参数是生成的图片
+        Object[] objs = ImageUtil.createImage();
+        //将验证码存入Session
+        request.getSession(true).setAttribute("validateCode",objs[0]);
+        //将图片输出给浏览器
+        BufferedImage image = (BufferedImage) objs[1];
+        // 禁止图像缓存。
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setDateHeader("Expires", 0);
+        response.setContentType("image/jpeg");
+        OutputStream os = response.getOutputStream();
+        ImageIO.write(image, "jpeg", os);
+        os.flush();
     }
 }

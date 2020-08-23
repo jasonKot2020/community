@@ -55,6 +55,21 @@
             }
         });
     }
+
+    function changeCaptcha(type){
+        //validateCode
+        // t.src = "validateCodeOut";
+        // window.setTimeout(function () {
+        //     t.src = "validateCode";
+        // },100);
+        if(type == 1){
+            window.location.href = "/login";
+        }else if(type == 2){
+            window.location.href = "/regAccount";
+        }else if(type == 3){
+
+        }
+    }
 </script>
 <body>
 <div th:insert="~{navigation::head}"></div>
@@ -91,6 +106,12 @@
                     <div class="input-group col-lg-6 ">
                         <span class="input-group-addon" >密码</span>
                         <input name="pass" type="password" class="form-control" placeholder="字母+数字(6~18位)" aria-describedby="basic-addon1" maxlength="18">
+                    </div>
+                    <hr>
+                    <div class="input-group col-lg-6 ">
+                        <span class="input-group-addon" ><img src="validateCode" name="code" onclick="changeCaptcha(1);" align="middle" />
+                        </span>
+                        <input name="code" type="text" class="form-control" placeholder="输入四位验证码" aria-describedby="basic-addon1" maxlength="4">
                     </div>
                     <hr>
                     <button type="button" onclick="request(1)" class="btn btn-success">登录</button>
@@ -130,6 +151,12 @@
                     <div class="input-group col-lg-6 ">
                         <span class="input-group-addon" >确认密码</span>
                         <input name="checkPass" type="password" class="form-control" placeholder="字母+数字(6~18位)" AutoComplete="off" maxlength="18">
+                    </div>
+                    <hr>
+                    <div class="input-group col-lg-6 ">
+                        <span class="input-group-addon" ><img src="validateCode" name="code" onclick="changeCaptcha(2);" align="middle" />
+                        </span>
+                        <input name="code" type="text" class="form-control" placeholder="输入四位验证码" aria-describedby="basic-addon1" maxlength="4">
                     </div>
                     <hr>
                     <button type="button" onclick="request(2)" class="btn btn-success">注册账号</button>

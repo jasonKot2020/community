@@ -2,6 +2,7 @@ package cn.kwebi.community.service;
 
 import cn.kwebi.community.mapper.UserMapper;
 import cn.kwebi.community.model.User;
+import cn.kwebi.community.util.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +11,10 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
-    public void createOrUpdate(User user) {
+    public void createOrUpdate(User user) throws Exception {
         User dbUser= userMapper.findByAccount(user.getAccount());
         if(dbUser==null){
+            user.setPassword(MD5Util.encode(user.getPassword()));
             user.setAvatarUrl("/imgs/init.jpg");
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate()); //用创建时间来赋值修改时间
