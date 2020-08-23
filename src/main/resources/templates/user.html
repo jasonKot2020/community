@@ -21,20 +21,41 @@
     <div id="errorTip" class="alert alert-danger col-lg-9 col-md-12 col-sm-12 col-xs-12" style="display: none;"></div>
 </div>
 
-<div class="container-fluid main-no-color-2">
+<div class="container-fluid">
     <div class="row">
-        <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12"></div>
-        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-            <div class="jumbotron">
-                <h3 id="title"></h3>
-                <p id="content"></p>
-            </div>
-        </div>
 
-        <div class="col-lg-5 col-md-12 col-sm-12 col-xs-12 main-color">
-            <h2>
-                <span class="glyphicon glyphicon-user" aria-hidden="true"></span> 个人资料
-            </h2>
+        <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12 main-no-color-2"></div>
+
+        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 main-color">
+            <ol class="breadcrumb">
+                <li><a href="/">Home</a></li>
+                <li class="active">Me</li>
+            </ol>
+                <!--<h2>-->
+                    <!--<span class="glyphicon glyphicon-user" aria-hidden="true"></span> 个人资料-->
+                <!--</h2>-->
+            <div class="jumbotron">
+                <ul class="nav nav-pills" role="tablist">
+                    <li role="presentation" class="active"><a href="#">Level <span class="badge">0</span></a></li>
+                    <li role="presentation" class="active"><a href="#" th:text="${session.user.getName()}">-- <span class="badge">0</span></a></li>
+                </ul>
+                <hr>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">个人信息</div>
+                <div class="panel-body">
+
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">历史</div>
+                <div class="panel-body">
+
+                </div>
+            </div>
+
             <hr>
         </div>
     </div>

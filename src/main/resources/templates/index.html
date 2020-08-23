@@ -20,8 +20,25 @@
     }
 
     $(function () {
+        console.log(JSON.stringify({
+            "parentId": targetId,
+            "content": content,
+            "type": type
+        }))
         $("#tip").show();
     });
+
+    function setTipWindos(t,title,tip) {
+
+        if(t > 0){
+            $('#but_value').val(t);
+        }else{
+            $('#but_value').val($(t).val());
+        }
+
+        $('#myModalLabel').html(title);
+        $('#myModalContent').html(tip);
+    }
 </script>
 <body>
 <div th:insert="~{navigation::head}"></div>
@@ -32,14 +49,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">设置</h4>
+                <h4 class="modal-title" id="myModalLabel">Delete</h4>
             </div>
-            <div class="modal-body">
-                ...
+            <div id="myModalContent" class="modal-body">
+                确定要删除吗?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary">保存更改</button>
+                <button id="but_value" type="button" class="btn btn-primary" onclick="">确定</button>
             </div>
         </div>
     </div>
@@ -82,14 +99,15 @@
 
                     <li th:if="${session.user != null}" class="li">
                         <div class="col-lg-1 col-md-12 col-sm-12 col-xs-12">
-                            <button type="button" class="btn-link" style="color: #8c8c8c;" data-toggle="modal" data-target="#myModal">
-                                <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
+                            <button id="star" type="button" class="btn-link" th:value="${question.id}"  data-toggle="modal" onclick="">
+                                <span id="star_icon" class="glyphicon glyphicon-tags" style="color: #8c8c8c;" aria-hidden="true"></span>
                             </button>
                         </div>
 
                         <li th:if="${session.user != null && session.user.getAccount() == question.user.getAccount()}" class="li">
                             <div class="col-lg-1 col-md-12 col-sm-12 col-xs-12">
-                                <button type="button" class="btn-link" style="color: #d9534f" data-toggle="modal" data-target="#myModal">
+                                <button type="button" class="btn-link" style="color: #d9534f" data-toggle="modal" data-target="#myModal" th:value="${question.id}"
+                                onclick="setTipWindos(this,'Delete','你确定要删除吗?删除后将无法还原!')">
                                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                                 </button>
                             </div>
@@ -123,9 +141,32 @@
                 </ul>
             </nav>
         </div>
-        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12 main-color">
-            <h3>地图动态</h3>
-            <hr>
+        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+            <!--<h3>地图动态</h3>-->
+            <!--<hr>-->
+
+            <div class="panel panel-default">
+                <div class="panel-heading">吐槽</div>
+                <div class="panel-body">
+                    <textarea class="form-control comment" rows="3" id="comment_content"></textarea>
+
+                    <button type="button" class="btn btn-success btn-comment" onclick="">发布</button>
+                    <button type="button" class="btn btn-comment btn-comment" onclick="">重置</button>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">社区吐槽</div>
+                <div class="panel-body">
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">account</div>
+                        <div class="panel-body">
+                            content
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </div>
     </div>
 </div>

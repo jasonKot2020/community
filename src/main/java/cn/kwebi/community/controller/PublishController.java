@@ -21,20 +21,20 @@ public class PublishController {
     @GetMapping("/publish/{id}")
     public String edit(@PathVariable(name = "id") Integer id,
                        HttpServletRequest request,
-                       Model model){
+                       Model model) {
         QuestionDTO question = questionService.getById(id);
-        if(id != null && question != null){
+        if (id != null && question != null) {
             //判断是否为自己的贴子
             QuestionDTO qt = questionService.getById(id);
             User u = (User) request.getSession().getAttribute("user");
-            if(!qt.getCreator().equals(u.getId())){
+            if (!qt.getCreator().equals(u.getId())) {
                 return "redirect:/";
             }
         }
         model.addAttribute("title", question.getTitle());
         model.addAttribute("description", question.getDescription());
         model.addAttribute("tag", question.getTag());
-        model.addAttribute("id",id);
+        model.addAttribute("id", id);
         return "publish";
     }
 
@@ -48,7 +48,7 @@ public class PublishController {
             @RequestParam(value = "title", required = false) String title,
             @RequestParam(value = "content", required = false) String description,
             @RequestParam(value = "tag", required = false) String tag,
-            @RequestParam(value = "id",required = false) Integer id,
+            @RequestParam(value = "id", required = false) Integer id,
             HttpServletRequest request,
             Model model) {
         model.addAttribute("title", title);
@@ -60,7 +60,7 @@ public class PublishController {
             return "publish";
         }
 
-        User user = (User)request.getSession().getAttribute("user");
+        User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
             model.addAttribute("error", "用户未登陆");
         }
@@ -73,7 +73,7 @@ public class PublishController {
 
         question.setId(id);
         questionService.createOrUpdate(question);
-        if(id != null){
+        if (id != null) {
             model.addAttribute("contextId", id);
             return "publish";
         }
@@ -85,7 +85,7 @@ public class PublishController {
      */
     @ResponseBody
     @GetMapping("/del/{id}")
-    public Object del(@PathVariable String id,HttpServletRequest request) {
+    public Object del(@PathVariable String id, HttpServletRequest request) {
         return JsonMessage.success();
     }
 
@@ -94,7 +94,7 @@ public class PublishController {
      */
     @ResponseBody
     @GetMapping("/star/{id}")
-    public Object star(@PathVariable String id,HttpServletRequest request) {
+    public Object star(@PathVariable String id, HttpServletRequest request) {
         return JsonMessage.success();
     }
 }

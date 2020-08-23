@@ -20,6 +20,14 @@
 
 <div class="container-fluid profile main">
     <div class="row">
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <ol class="breadcrumb">
+                <li><a href="/">Home</a></li>
+                <li class="active">话题</li>
+            </ol>
+        </div>
+
         <!--        左边回复列表-->
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
             <!--正文-->
@@ -62,6 +70,7 @@
                             </h5>
                             <div th:text="${comment.content}"></div>
                             <div class="menu">
+                                <!--点赞-->
                                 <span class="glyphicon glyphicon-thumbs-up icon"></span>
                                 <div class="icon" >
                                 <span class="glyphicon glyphicon-comment" th:data-id="${comment.id}"
@@ -128,6 +137,27 @@
             <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <h4>热门话题</h4>
+                <div class="panel panel-default">
+                    <div class="panel-heading">title</div>
+                    <div class="panel-body">
+                        content。。。。
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">title</div>
+                    <div class="panel-body">
+                        content。。。。
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">title</div>
+                    <div class="panel-body">
+                        content。。。。
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

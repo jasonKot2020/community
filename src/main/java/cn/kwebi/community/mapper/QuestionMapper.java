@@ -12,13 +12,13 @@ public interface QuestionMapper {
     void create(Question question);
 
 //    @Select("select * from question order by gmt_create,gmt_modified desc limit #{offset}, #{size} ")
-    @Select("select * from question limit #{offset}, #{size} ")
+    @Select("select * from question order by gmt_create desc,gmt_modified desc limit #{offset}, #{size} ")
     List<Question> list(@Param(value = "offset") Integer offset,@Param(value = "size") Integer size);
 
     @Select("select count(1) from question")
     Integer count();
 
-    @Select("select * from question where creator=#{creator} limit  #{offset},#{size}")
+    @Select("select * from question where creator=#{creator} order by gmt_create desc,gmt_modified desc limit  #{offset},#{size}")
     List<Question> listByUserId(@Param(value = "creator") Integer creator, @Param(value = "offset") Integer offset,@Param(value = "size") Integer size);
 
     @Select("select count(1) from question where creator=#{creator}")

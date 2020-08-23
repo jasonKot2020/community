@@ -166,3 +166,26 @@ function commentToCommentator(id,commentId) {
     inputBtn.attr("value","回复 "+name+" :")
 }
 
+//ajax.post
+function ajaxPost(url, str, val) {
+    var strArray = str.print(",");
+    var valArray = val.print(",");
+    for(k in str){
+
+    }
+    $.ajax({
+        url: url,
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json",
+        data: json,
+        success: function (rel) {
+            if (rel.code == 200) {
+                showTip(rel.message,"success");
+            }else{
+                showTip(rel.message,"error");
+            };
+        }
+    });
+}
+

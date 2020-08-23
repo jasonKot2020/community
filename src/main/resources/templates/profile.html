@@ -11,10 +11,13 @@
     <script src="/js/community.js" type="application/javascript"></script>
 </head>
 <body>
+
 <div th:insert="~{navigation::head}"></div>
-<div class="container-fluid main2 profile">
-    <div class="row">
-        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+
+<div class="container-fluid profile">
+    <div class="row main-no-color-2 ">
+        <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12"></div>
+        <div class="col-lg-5 col-md-12 col-sm-12 col-xs-12 main-color">
             <h2>
                 <span class="glyphicon glyphicon-list" aria-hidden="true" th:text="${sectionName}"></span>
             </h2>
@@ -59,12 +62,18 @@
             </nav>
         </div>
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+
+            <div class="jumbotron img-by-div">
+                <h3>create a comment bbs</h3>
+            </div>
+
             <div class="list-group section">
                 <a href="/profile/questions" th:class="${section == 'questions'} ? 'active list-group-item':'list-group-item'">我的话题</a>
                 <a href="/profile/replies" th:class="${section == 'replies'} ? 'active list-group-item':'list-group-item'">
-                    最新回复<span class="badge">999</span>
+                    最新回复<span class="badge">none</span>
                 </a>
             </div>
+
         </div>
     </div>
 </div>
