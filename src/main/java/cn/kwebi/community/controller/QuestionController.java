@@ -61,4 +61,12 @@ public class QuestionController {
                        @RequestParam(name = "id", required = false) Integer id){
         return likePostService.LikePost(accountId,id);
     }
+
+    @ResponseBody
+    @GetMapping("/question/delete")
+    public Object delete(HttpServletRequest request,
+                       @RequestParam(name = "id", required = false) Integer id){
+        User user = (User) request.getSession().getAttribute("user");
+        return questionService.deletById(user.getId(),id);
+    }
 }

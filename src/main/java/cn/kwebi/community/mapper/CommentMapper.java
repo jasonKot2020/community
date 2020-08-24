@@ -22,4 +22,7 @@ public interface CommentMapper {
 
     @Update("update comment set look_status = 1 where PARENT_ID=#{id}")
     void updateLookStatus(@Param(value = "id") Integer id);
+
+    @Update("delete from comment where PARENT_ID=#{id}")
+    void deleteByParentId(@Param(value = "id") Integer id);
 }

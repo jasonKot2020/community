@@ -18,9 +18,9 @@ position:fixed;top:0px;left:0px;bottom:0px;width:100%;height:50px;background-col
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
                     data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                <span class="sr-only">war3-魔兽争霸3-魔兽地图-war3 Map-ORPG</span>
+                <span class="sr-only" th:text="${session.title}"></span>
             </button>
-            <a class="navbar-brand" href="/">War3 ORPG Map</a>
+            <a class="navbar-brand" href="/" th:text="${session.title}"></a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -79,6 +79,22 @@ position:fixed;top:0px;left:0px;bottom:0px;width:100%;height:50px;background-col
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
+
+    <!-- 弹窗提示 -->
+        <div id="info_win" style="display: none" class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" onclick="$('#info_win').hide()">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel"></h4>
+                </div>
+                <div id="myModalContent" class="modal-body"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="$('#info_win').hide()">关闭</button>
+                    <button id="info_but" type="button" class="btn btn-primary" onclick="winByDetermine(this)">确定</button>
+                </div>
+            </div>
+        </div>
+
 </div>
 
 <div th:fragment="info" class="container-fluid main-color" style="text-align:center;line-height:30px;position:fixed;bottom:0;left:0;right:0">

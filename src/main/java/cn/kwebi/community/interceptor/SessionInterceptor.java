@@ -18,6 +18,9 @@ public class SessionInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        //设置平台 - title
+        if(request.getSession().getAttribute("title") == null) request.getSession().setAttribute("title", "War3 ORPG Map");
+
         Cookie[] cookies = request.getCookies();
         if (cookies != null && cookies.length != 0)
             for (Cookie cookie : cookies) {

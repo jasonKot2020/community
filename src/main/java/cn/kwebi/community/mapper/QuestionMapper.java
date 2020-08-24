@@ -45,4 +45,7 @@ public interface QuestionMapper {
             "left join (select * from question) q on c.PARENT_ID = q.id group by PARENT_ID)t where creator = #{id} " +
             "order by gmt_create desc,gmt_modified desc limit #{offset}, #{size} ")
     List<Question> listByCount(@Param(value = "id") Integer id,@Param(value = "offset") Integer offset,@Param(value = "size") Integer size);
+
+    @Update("delete from question where creator=#{acountId} AND id=#{id}")
+    void deleteById(@Param(value = "acountId") Integer acountId,@Param(value = "id") Integer id);
 }

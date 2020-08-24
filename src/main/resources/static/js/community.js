@@ -2,10 +2,9 @@
 导航栏跳转
  */
 function setTopUrl(type,url) {
-    if($("#activeBut"+type).hasClass('active')){
-        console.log(type)
-        return;
-    }
+    // if($("#activeBut"+type).hasClass('active')){
+    //     return;
+    // }
     /*
     0首页
     1介绍
@@ -37,7 +36,7 @@ function showTip(mes,type,showTime) {
 个人中心
  */
 function toAccount(name) {
-    window.location.href = '/' + name;
+    window.location.href = '/account/' + name;
 }
 
 /*
@@ -218,7 +217,7 @@ function toJson(str,val) {
         json += "'"+ strArray[k] +"':"+valArray[k]+",";
     }
     json.substr(0,json.length - 1);
-    json += "}";
+    json = json += "}";
     return json;
 }
 
@@ -231,7 +230,7 @@ function toGetStr(str,val) {
     for(k in strArray){
         url += strArray[k]+"="+valArray[k]+"&";
     }
-    url.substr(0,url.length - 1);
+    url = url.substr(0,url.length - 1);
     return url;
 }
 
@@ -252,5 +251,126 @@ function channelSetting(t,rel,url) {
             $(t).text(parseInt(count)-1);
         }
     }
+
+    //删除帖子刷新页面
+    if(rel.code == 200 && url == '/question/delete'){
+        window.location.reload();
+    }
 }
 
+/**
+ * 信息窗口
+ * @param t
+ * @param title
+ * @param tip
+ */
+function setTipWindos(t,title,tip) {
+
+    var url = $(t).data('url');
+    var key = $(t).data('key');
+    var val = $(t).data('val');
+
+    $("#info_win").show();
+
+    if(t > 0){
+        $('#info_but').val(t);
+    }else{
+        $('#info_but').val($(t).val());
+    }
+
+    $('#myModalLabel').html(title);
+    $('#myModalContent').html(tip);
+
+   if(url != null) $('#info_but').data('url',url);
+   if(key != null) $('#info_but').data('key',key);
+   if(val != null) $('#info_but').data('val',val);
+}
+
+/**
+ * 信息窗口确定操作
+ * @param t
+ */
+function winByDetermine(t) {
+    var url = $(t).data('url');
+    var key = $(t).data('key');
+    var val = $(t).data('val');
+    requestAjax(t,'get',url, key, val);
+}
+
+// <div class="panel panel-default">
+//     <div class="panel-heading">admin说：</div>
+// <div class="panel-body">
+//     <img src="http://localhost:8080/js/kindeditor/plugins/emoticons/images/18.gif" border="0"> ​​
+//                         这个地图要TJ了！！！
+// </div>
+// </div>
+function addMessage(t,rel) {
+    var id = $(t).id;
+    addMessage(id,rel);
+}
+function addMessageById(id,rel) {
+    var t = $("#"+id);
+    var divId = "";
+    var html = "<div "+divId+" class=\"panel panel-default\">";
+        html+= "<div class=\"panel-heading\">";
+        html+= rel.sender+"说：";
+        html+= "</div>";
+        html+= "<div class=\"panel-body\">";
+        html+= rel.content;
+        html+= "</div>";
+        html+= "</div>";
+
+        t.html(t.html() + html);
+}
+
+//{"code":200,"message":"操作成功","data":[{"id":1,"content":"测试一下哈哈~","sender":"管理员","gmt_create":0,"creator":0}]}
+function getMessage(id){
+    //刷新吐槽
+    $.ajax({
+        url:"/message/list",
+        type : 'GET',
+        dataType : 'json',
+        timeout : 500000,
+        success:function (rel) {
+            if(rel.code == 200){
+                $("#"+id).html("");
+                var list = rel.data;
+                for(k in list){
+                    addMessageById(id,list[k]);
+                }
+            }
+        }
+    });
+}
+
+function sendMessage(id) {
+    var url = "/message/send";
+    var fromId = "#sendMessageForm";
+    var from = $('#description')[0];
+
+    editor.sync();
+    html=document.getElementById('description').value;//原生API
+    $("#schtmlnr").val(html);//把KindEditor产生的baihtml代码放到schtmlnr里面，用于提交
+
+    if(editor.count('text') > 100){
+        showTip("字数超过限制，请适当删除部分内容","error");
+        return;
+    }
+
+    $.ajax({
+        url: url ,
+        type: "POST",
+        dataType: "json",
+        data: $(fromId).serialize(),
+        success: function (rel) {
+            if (rel.code == 200) {
+                getMessage(id);
+                editor.html("");
+                showTip(rel.message,"info");
+            }else{
+                showTip(rel.message,"error");
+            };
+        }
+    });
+
+}

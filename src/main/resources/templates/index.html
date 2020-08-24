@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>War3 ORPG Map - 首页</title>
+    <title th:text="${session.title + ' - 社区首页'}"></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <script src="/js/jquery-3.3.1.js" type="application/javascript"></script>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -13,6 +13,10 @@
     <script charset="utf-8" src="/js/kindeditor/lang/zh_CN.js"></script>
 </head>
 <script type="application/javascript">
+    window.setInterval(function () {
+        getMessage('messageShow');
+    },10000);
+
     window.onload = function () {
         var closable = window.localStorage.getItem("closable");
         if(closable === "true"){
@@ -23,54 +27,34 @@
 
     $(function () {
         $("#tip").show();
+        getMessage('messageShow');
     });
-
-    function setTipWindos(t,title,tip) {
-
-        if(t > 0){
-            $('#but_value').val(t);
-        }else{
-            $('#but_value').val($(t).val());
-        }
-
-        $('#myModalLabel').html(title);
-        $('#myModalContent').html(tip);
-    }
 
     var editor;
     KindEditor.ready(function(K) {
         editor = K.create('textarea[name="content"]', {
-            resizeType : 0,
-            allowPreviewEmoticons : false,
-            allowImageUpload : false,
+            resizeType : 0,
+            allowPreviewEmoticons : false,
             items : [
                 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
                 'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
-                'insertunorderedlist', '|', 'emoticons']
+                'insertunorderedlist', '|', 'emoticons'],
+                afterChange : function() {
+                var limitNum = 100; //设定限制字数
+                var pattern = '👆还可输入' + (limitNum-this.count('text')) + '字';
+                if(this.count('text') > limitNum) {
+                    pattern = ('✖字数超过限制，请适当删除部分内容');
+                } else {
+                    var result = limitNum - this.count('text');
+                    pattern = '👆还可以输入' + result + '字';
+                }
+                $('#messageTile').text(pattern); //输入显示
+            }
         });
     });
 </script>
 <body>
 <div th:insert="~{navigation::head}"></div>
-
-<!-- 弹窗提示 -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Delete</h4>
-            </div>
-            <div id="myModalContent" class="modal-body">
-                确定要删除吗?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button id="but_value" type="button" class="btn btn-primary" onclick="">确定</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!--顶部-->
 <div class="container-fluid main-no-color">
@@ -102,7 +86,7 @@
                         <span class="text-desc">
                             <span th:text="${question.commentCount}"></span> 个回复 • <span
                                 th:text="${question.viewCount}"></span> 次浏览 • <span
-                                th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}"></span> • 作者<span
+                                th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}"></span> • 作者：<span
                                 th:text="${question.user.getName()}"></span>
                         </span>
                     </div>
@@ -113,15 +97,6 @@
                                 <span id="star_icon" class="glyphicon glyphicon-tags" style="color: #8c8c8c;" aria-hidden="true"></span>
                             </button>
                         </div>
-
-                        <li th:if="${session.user != null && session.user.getAccount() == question.user.getAccount()}" class="li">
-                            <div class="col-lg-1 col-md-12 col-sm-12 col-xs-12">
-                                <button type="button" class="btn-link" style="color: #d9534f" data-toggle="modal" data-target="#myModal" th:value="${question.id}"
-                                onclick="setTipWindos(this,'Delete','你确定要删除吗?删除后将无法还原!')">
-                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                </button>
-                            </div>
-                        </li>
                     </li>
                 </div>
                 <hr>
@@ -158,23 +133,18 @@
                 <li id="menu_b" class="active">展示最新5条动态</li>
             </ol>
 
-            <div class="form-group">
-                <div class="panel panel-default">
-                    <div class="panel-heading">admin说：</div>
-                    <div class="panel-body">
-                        <img src="http://localhost:8080/js/kindeditor/plugins/emoticons/images/18.gif" border="0"> ​​
-                        这个地图要TJ了！！！
-                    </div>
-                </div>
+            <div id="messageShow" class="form-group">
+                <!--吐槽展示区域-->
+
             </div>
 
-            <form action="/publish" method="post">
+            <form id="sendMessageForm" action="/message/send" method="post">
                 <div th:if="${session.user != null}" class="panel panel-default">
-                    <div class="panel-heading">我要吐槽
-                        <button type="submit" class="navbar-right">发布</button>
+                    <div  class="panel-heading">我要吐槽
+                        <button type="button" class="navbar-right" onclick="sendMessage('messageShow')">发布</button>
                     </div>
-                    <input id="nowId" name="id" type="hidden" th:value="${id}">
                     <textarea name="content" id="description" rows="3" class="form-control" style="height:100px;width:100%;border:none;outline:none;"></textarea>
+                    <div id="messageTile" class="navbar-right"></div>
                 </div>
             </form>
 

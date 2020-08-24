@@ -4,10 +4,12 @@ import cn.kwebi.community.dto.PaginationDTO;
 import cn.kwebi.community.dto.QuestionDTO;
 import cn.kwebi.community.exception.CustomizeErrorCode;
 import cn.kwebi.community.exception.CustomizeException;
+import cn.kwebi.community.mapper.CommentMapper;
 import cn.kwebi.community.mapper.QuestionMapper;
 import cn.kwebi.community.mapper.UserMapper;
 import cn.kwebi.community.model.Question;
 import cn.kwebi.community.model.User;
+import cn.kwebi.community.util.JsonMessage;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,9 @@ public class QuestionService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private CommentMapper commentMapper;
 
     public PaginationDTO list(Integer page, Integer size) {
         Integer totalCount = questionMapper.count();
@@ -112,5 +117,23 @@ public class QuestionService {
 
     public Integer totalCount(Integer id) {
         return questionMapper.totalCount(id);
+    }
+
+    public Object deletById(Integer accountId,Integer id){
+        Question qt = questionMapper.getById(id);
+        if(qt == null){
+            return JsonMessage.error();
+        }
+        if(!accountId.equals(qt.getCreator())){
+            return  JsonMessage.error("操作失败，无此权限！");
+        }
+        try {
+            questionMapper.deleteById(accountId,id);
+            commentMapper.deleteByParentId(id);
+        }catch (Exception e){
+            return JsonMessage.error();
+        }finally {
+            return JsonMessage.success();
+        }
     }
 }
