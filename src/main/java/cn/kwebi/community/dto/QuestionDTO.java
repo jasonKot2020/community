@@ -16,6 +16,7 @@ public class QuestionDTO {
     private Integer commentCount;
     private Integer likeCount;
     private User user;
+    private Integer collection;
 
     public Integer getId() {
         return id;
@@ -103,5 +104,13 @@ public class QuestionDTO {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Integer getCollection() {
+        return collection;
+    }
+
+    public void setCollection(Integer collection) {
+        this.collection = collection;
     }
 }

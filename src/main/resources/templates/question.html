@@ -12,33 +12,57 @@
     <script type="application/javascript">
         $(function () {
             $("#content_text").html($("#content_text").text());
+            $("#addCollect").click(function () {
+                var id = $(this).data('id');
+                requestAjax(this,'get','/addCollection','articleId',id);
+            });
+            $("#removeCollect").click(function () {
+                var id = $(this).data('id');
+                requestAjax(this,'get','/removeCollection','articleId',id);
+            });
         });
     </script>
 </head>
 <body>
 <div th:insert="~{navigation::head}"></div>
 
-<div class="container-fluid profile main">
+<div class="container-fluid profile main-no-color">
     <li class="row li">
 
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <ol class="breadcrumb">
-                <li class="li"><a href="/">Home</a></li>
-                <li class="active li">话题</li>
-            </ol>
-        </div>
 
+        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+        </div>
         <!--        左边回复列表-->
-        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 main-color">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <ol class="breadcrumb">
+                    <li class="li"><a href="/">Home</a></li>
+                    <li class="active li">话题</li>
+                </ol>
+            </div>
             <!--正文-->
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <h3>
                     <span th:text="${question.title}"></span>
                 </h3>
                 <span class="text-desc">
+
+                    <div class="media-left" style="position: absolute;top: 25px; right: 15px;">
+                        <a href="#">
+                            <img th:src="${question.user.avatarUrl}" alt="" class="img-rounded media-object">
+                        </a>
+                    </div>
+
                 作者: <span th:text="${question.user.name}"></span> |
                 发布时间: <span th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}"></span> |
                 阅读数: <span th:text="${question.viewCount}"></span>
+                    <span th:if="${session.user != null}">|收藏：</span>
+                    <button id="addCollect_div" th:if="${session.user != null && question.getCollection() == 0}"  type="button" class="btn-link" th:value="${question.id}"  data-toggle="modal" >
+                        <span id="addCollect" th:data-id="${question.id}" class="glyphicon glyphicon-tags" style="color: #8c8c8c;" aria-hidden="true"></span>
+                    </button>
+                    <button id="removeCollect_div" th:if="${session.user != null && question.getCollection() == 1}"  type="button" class="btn-link" th:value="${question.id}"  data-toggle="modal" >
+                        <span id="removeCollect" th:data-id="${question.id}" class="glyphicon glyphicon-tags" style="color: #eb9316;" aria-hidden="true"></span>
+                    </button>
                 </span>
                 <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -71,7 +95,7 @@
                             <div th:text="${comment.content}"></div>
                             <div class="menu">
                                 <!--点赞requestJson('get','/likePost',${user.id},${comment.id})-->
-                                <span th:if="${session.user != null}" th:text="${comment.likeCount}" th:onclick="'JavaScript:requestAjax(this,\'get\',\'/likePost\',\'accountId,id\',\''+${user.id}+','+${comment.id}+'\')'" class="glyphicon glyphicon-thumbs-up icon"></span>
+                                <span th:if="${session.user != null}" th:text="${comment.likeCount}" th:onclick="'JavaScript:requestAjax(this,\'get\',\'/likePost\',\'accountId,id,articleId\',\''+${user.id}+','+${comment.id}+','+${question.id}+'\')'" class="glyphicon glyphicon-thumbs-up icon"></span>
                                 <span th:if="${session.user == null}" th:text="${comment.likeCount}" class="glyphicon glyphicon-thumbs-up icon"></span>
                                 <div class="icon" >
                                 <span class="glyphicon glyphicon-comment" th:data-id="${comment.id}"
@@ -120,48 +144,48 @@
             </div>
         </div>
         <!--        右边信息块-->
-        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <h4>发起人</h4>
-                <div class="media">
-                    <div class="media-left">
-                        <a href="#">
-                            <img th:src="${question.user.avatarUrl}" alt="" class="img-rounded media-object">
-                        </a>
-                    </div>
-                    <div class="media-body">
-                        <h5 class="media-heading">
-                            <span th:text="${question.user.name}"></span>
-                        </h5>
-                    </div>
-                </div>
-            </div>
-            <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <h4>热门话题</h4>
-                <div class="panel panel-default">
-                    <div class="panel-heading">title</div>
-                    <div class="panel-body">
-                        content。。。。
-                    </div>
-                </div>
+        <!--<div class="col-lg-2 col-md-12 col-sm-12 col-xs-12 main">-->
+            <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+                <!--<h4>发起人</h4>-->
+                <!--<div class="media">-->
+                    <!--<div class="media-left">-->
+                        <!--<a href="#">-->
+                            <!--<img th:src="${question.user.avatarUrl}" alt="" class="img-rounded media-object">-->
+                        <!--</a>-->
+                    <!--</div>-->
+                    <!--<div class="media-body">-->
+                        <!--<h5 class="media-heading">-->
+                            <!--<span th:text="${question.user.name}"></span>-->
+                        <!--</h5>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+            <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+                <!--<h4>热门话题</h4>-->
+                <!--<div class="panel panel-default">-->
+                    <!--<div class="panel-heading">title</div>-->
+                    <!--<div class="panel-body">-->
+                        <!--content。。。。-->
+                    <!--</div>-->
+                <!--</div>-->
 
-                <div class="panel panel-default">
-                    <div class="panel-heading">title</div>
-                    <div class="panel-body">
-                        content。。。。
-                    </div>
-                </div>
+                <!--<div class="panel panel-default">-->
+                    <!--<div class="panel-heading">title</div>-->
+                    <!--<div class="panel-body">-->
+                        <!--content。。。。-->
+                    <!--</div>-->
+                <!--</div>-->
 
-                <div class="panel panel-default">
-                    <div class="panel-heading">title</div>
-                    <div class="panel-body">
-                        content。。。。
-                    </div>
-                </div>
+                <!--<div class="panel panel-default">-->
+                    <!--<div class="panel-heading">title</div>-->
+                    <!--<div class="panel-body">-->
+                        <!--content。。。。-->
+                    <!--</div>-->
+                <!--</div>-->
 
-            </div>
-        </div>
+            <!--</div>-->
+        <!--</div>-->
     </div>
 </div>
 

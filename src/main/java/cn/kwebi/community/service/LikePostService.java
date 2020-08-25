@@ -17,7 +17,7 @@ public class LikePostService {
      * @param id
      * @return
      */
-    public Object LikePost(Integer accountId,Integer id){
+    public Object LikePost(Integer accountId,Integer id,Integer articleId){
 
         //已点赞则取消点赞
         if(likePostMapper.check(accountId,id) > 0){
@@ -25,7 +25,7 @@ public class LikePostService {
             likePostMapper.setLikeCount(id,-1);
             return JsonMessage.error("取消点赞~");
         }else{
-            likePostMapper.create(accountId,id);
+            likePostMapper.create(accountId,id,articleId);
             likePostMapper.check(accountId,id);
             likePostMapper.setLikeCount(id,1);
             return JsonMessage.success("成功点赞~");

@@ -4,6 +4,7 @@ import cn.kwebi.community.dto.CommentDTO;
 import cn.kwebi.community.dto.QuestionDTO;
 import cn.kwebi.community.enums.CommentTypeEnum;
 import cn.kwebi.community.model.User;
+import cn.kwebi.community.service.CollectionArticleService;
 import cn.kwebi.community.service.CommentService;
 import cn.kwebi.community.service.LikePostService;
 import cn.kwebi.community.service.QuestionService;
@@ -28,6 +29,9 @@ public class QuestionController {
 
     @Autowired
     private LikePostService likePostService;
+
+    @Autowired
+    private CollectionArticleService collectionArticleService;
 
     @GetMapping("/question/{id}")
     public String question(@PathVariable("id") Integer id,
@@ -58,8 +62,9 @@ public class QuestionController {
     @GetMapping("/likePost")
     public Object like(HttpServletRequest request,
                        @RequestParam(name = "accountId", required = false) Integer accountId,
-                       @RequestParam(name = "id", required = false) Integer id){
-        return likePostService.LikePost(accountId,id);
+                       @RequestParam(name = "id", required = false) Integer id,
+                       @RequestParam(name = "articleId", required = false) Integer articleId){
+        return likePostService.LikePost(accountId,id,articleId);
     }
 
     @ResponseBody
@@ -68,5 +73,19 @@ public class QuestionController {
                        @RequestParam(name = "id", required = false) Integer id){
         User user = (User) request.getSession().getAttribute("user");
         return questionService.deletById(user.getId(),id);
+    }
+
+    @ResponseBody
+    @GetMapping("/addCollection")
+    public Object addCollection(HttpServletRequest request, @RequestParam(name = "articleId", required = false) Integer articleId){
+        User u = (User) request.getSession().getAttribute("user");
+        return collectionArticleService.Collection(u.getId(),articleId,0);
+    }
+
+    @ResponseBody
+    @GetMapping("/removeCollection")
+    public Object removeCollection(HttpServletRequest request, @RequestParam(name = "articleId", required = false) Integer articleId){
+        User u = (User) request.getSession().getAttribute("user");
+        return collectionArticleService.Collection(u.getId(),articleId,1);
     }
 }

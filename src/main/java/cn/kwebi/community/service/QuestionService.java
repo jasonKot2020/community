@@ -4,9 +4,7 @@ import cn.kwebi.community.dto.PaginationDTO;
 import cn.kwebi.community.dto.QuestionDTO;
 import cn.kwebi.community.exception.CustomizeErrorCode;
 import cn.kwebi.community.exception.CustomizeException;
-import cn.kwebi.community.mapper.CommentMapper;
-import cn.kwebi.community.mapper.QuestionMapper;
-import cn.kwebi.community.mapper.UserMapper;
+import cn.kwebi.community.mapper.*;
 import cn.kwebi.community.model.Question;
 import cn.kwebi.community.model.User;
 import cn.kwebi.community.util.JsonMessage;
@@ -29,6 +27,12 @@ public class QuestionService {
     @Autowired
     private CommentMapper commentMapper;
 
+    @Autowired
+    private LikePostMapper likePostMapper;
+
+    @Autowired
+    private CollectionArticleMapper collectionArticleMapper;
+
     public PaginationDTO list(Integer page, Integer size) {
         Integer totalCount = questionMapper.count();
         PaginationDTO paginationDTO = new PaginationDTO();
@@ -47,6 +51,8 @@ public class QuestionService {
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question,questionDTO);
             questionDTO.setUser(user);
+            //是否收藏
+            if(user != null)questionDTO.setCollection(collectionArticleMapper.check(user.getId(),question.getId(),0));
             questionDTOList.add(questionDTO);
         }
         paginationDTO.setQuestions(questionDTOList);
@@ -55,7 +61,21 @@ public class QuestionService {
     }
 
     public PaginationDTO list(Integer id, Integer page, Integer size,String action) {
-        Integer totalCount = action.equals("replies") ? questionMapper.totalCount(id) : questionMapper.countByUserId(id);
+        Integer totalCount = 0;
+
+        if("questions".equals(action)){
+            totalCount = questionMapper.totalCount(id);
+        }
+        if("replies".equals(action)){
+            totalCount = questionMapper.countByUserId(id);
+        }
+        if("collect".equals(action)){
+            totalCount = questionMapper.collectionByUserId(id);
+        }
+        if("likePost".equals(action)){
+            totalCount = questionMapper.likeCountByUserId(id);
+        }
+
         PaginationDTO paginationDTO = new PaginationDTO();
 
         if (page < 1) page = 1;
@@ -64,7 +84,20 @@ public class QuestionService {
         Integer offset = size*(page-1);
         if(offset<0)offset=0;
         paginationDTO.setPagination(totalPage,page);
-        List<Question> list = action.equals("replies") ? questionMapper.listByCount(id,offset,size) : questionMapper.listByUserId(id,offset,size);
+        //action.equals("replies") ? questionMapper.listByCount(id,offset,size) : questionMapper.listByUserId(id,offset,size)
+        List<Question> list = new ArrayList<Question>();
+        if("questions".equals(action)){
+            list = questionMapper.listByUserId(id,offset,size);
+        }
+        if("replies".equals(action)){
+            list = questionMapper.listByCount(id,offset,size);
+        }
+        if("collect".equals(action)){
+            list = questionMapper.listByCollection(id,offset,size);
+        }
+        if("likePost".equals(action)){
+            list = questionMapper.listByLike(id,offset,size);
+        }
         List<QuestionDTO> questionDTOList = new ArrayList<>();
 
         for(Question question: list){
@@ -72,6 +105,8 @@ public class QuestionService {
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question,questionDTO);
             questionDTO.setUser(user);
+            //是否收藏
+            if(user != null)questionDTO.setCollection(collectionArticleMapper.check(user.getId(),question.getId(),0));
             questionDTOList.add(questionDTO);
         }
         paginationDTO.setQuestions(questionDTOList);
@@ -89,6 +124,8 @@ public class QuestionService {
         BeanUtils.copyProperties(question,questionDTO);
         User user = userMapper.findById(question.getCreator());
         questionDTO.setUser(user);
+        //是否收藏
+        if(user != null)questionDTO.setCollection(collectionArticleMapper.check(user.getId(),question.getId(),0));
         return questionDTO;
     }
 
@@ -119,6 +156,10 @@ public class QuestionService {
         return questionMapper.totalCount(id);
     }
 
+    public Integer totalCollect(Integer id) {
+        return questionMapper.collectionByUserId(id);
+    }
+
     public Object deletById(Integer accountId,Integer id){
         Question qt = questionMapper.getById(id);
         if(qt == null){
@@ -130,6 +171,8 @@ public class QuestionService {
         try {
             questionMapper.deleteById(accountId,id);
             commentMapper.deleteByParentId(id);
+            likePostMapper.deleteByArticleId(id);
+            collectionArticleMapper.delete(accountId,id,0);
         }catch (Exception e){
             return JsonMessage.error();
         }finally {

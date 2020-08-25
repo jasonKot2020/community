@@ -34,8 +34,17 @@ public class ProfileController {
             model.addAttribute("section","replies");
             model.addAttribute("sectionName","最新回复");
         }
+        if("collect".equals(action)){
+            model.addAttribute("section","collect");
+            model.addAttribute("sectionName","我的收藏");
+        }
+        if("likePost".equals(action)){
+            model.addAttribute("section","likePost");
+            model.addAttribute("sectionName","点赞过的");
+        }
 
         model.addAttribute("totalCount",questionService.totalCount(user.getId()));
+        model.addAttribute("totalCollect",questionService.totalCollect(user.getId()));
 
         PaginationDTO paginationDTO = questionService.list(user.getId(), page, size,action);
         model.addAttribute("pagination",paginationDTO);

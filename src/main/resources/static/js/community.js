@@ -1,7 +1,7 @@
 /*
 导航栏跳转
  */
-function setTopUrl(type,url) {
+function setTopUrl(type, url) {
     // if($("#activeBut"+type).hasClass('active')){
     //     return;
     // }
@@ -16,20 +16,20 @@ function setTopUrl(type,url) {
 /*
 tip box
  */
-function showTip(mes,type,showTime) {
-    var tipId = "#"+type+"Tip";
+function showTip(mes, type, showTime) {
+    var tipId = "#" + type + "Tip";
 
     $(tipId).text(mes);
 
     $(tipId).fadeIn(500);
 
-    if(showTime == null || showTime < 2000){
+    if (showTime == null || showTime < 2000) {
         showTime = 3000;
     }
 
     window.setTimeout(function () {
         $(tipId).fadeOut(500);
-    },(showTime-500));
+    }, (showTime - 500));
 }
 
 /*
@@ -89,22 +89,21 @@ function comment(e) {
 }
 
 //日期格式化
-Date.prototype.Format = function(fmt)
-{ //author: meizz
+Date.prototype.Format = function (fmt) { //author: meizz
     var o = {
-        "M+" : this.getMonth()+1,                 //月份
-        "d+" : this.getDate(),                    //日
-        "h+" : this.getHours(),                   //小时
-        "m+" : this.getMinutes(),                 //分
-        "s+" : this.getSeconds(),                 //秒
-        "q+" : Math.floor((this.getMonth()+3)/3), //季度
-        "S"  : this.getMilliseconds()             //毫秒
+        "M+": this.getMonth() + 1,                 //月份
+        "d+": this.getDate(),                    //日
+        "h+": this.getHours(),                   //小时
+        "m+": this.getMinutes(),                 //分
+        "s+": this.getSeconds(),                 //秒
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+        "S": this.getMilliseconds()             //毫秒
     };
-    if(/(y+)/.test(fmt))
-        fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
-    for(var k in o)
-        if(new RegExp("("+ k +")").test(fmt))
-            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length===1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+    if (/(y+)/.test(fmt))
+        fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+        if (new RegExp("(" + k + ")").test(fmt))
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
 };
 
@@ -124,38 +123,38 @@ function collapseComments(e) {
         e.classList.remove("active");
     } else {
         var subCommentContainer = $("#comment-" + id);
-        if(subCommentContainer.children().length!==1){
+        if (subCommentContainer.children().length !== 1) {
             comments.addClass("in");//展开二级评论
             e.setAttribute("data-collapse", "in");//标记状态
             e.classList.add("active");
-        }else {
+        } else {
             //追加二级评论
             $.getJSON("/comment/" + id, function (data) {
                 $.each(data.data, function (index, comment) {
-                    var mediaLeft = $("<div/>",{
-                        "class":"media-left"
-                    }).append($("<img/>",{
-                        "class":"img-rounded media-object",
-                        "src":comment.user.avatarUrl
+                    var mediaLeft = $("<div/>", {
+                        "class": "media-left"
+                    }).append($("<img/>", {
+                        "class": "img-rounded media-object",
+                        "src": comment.user.avatarUrl
                     }));
 
-                    var bodyElement = $("<div/>",{
-                        "class":"media-body"
-                    }).append($("<h5/>",{
-                        "class":"media-heading",
-                        "id":"secComment-"+comment.id,
-                        html:comment.user.name
-                    })).append($("<div/>",{
-                        html:comment.content
-                    })).append($("<div/>",{
-                        "class":"menu",
-                    }).append($("<div/>",{
-                        "class":"pull-right",
-                        html:new Date(comment.gmtCreate).Format("yyyy-MM-dd hh:mm")+" <a style='cursor: pointer;' onclick='commentToCommentator("+id+","+comment.id+")'>回复</a>"
+                    var bodyElement = $("<div/>", {
+                        "class": "media-body"
+                    }).append($("<h5/>", {
+                        "class": "media-heading",
+                        "id": "secComment-" + comment.id,
+                        html: comment.user.name
+                    })).append($("<div/>", {
+                        html: comment.content
+                    })).append($("<div/>", {
+                        "class": "menu",
+                    }).append($("<div/>", {
+                        "class": "pull-right",
+                        html: new Date(comment.gmtCreate).Format("yyyy-MM-dd hh:mm") + " <a style='cursor: pointer;' onclick='commentToCommentator(" + id + "," + comment.id + ")'>回复</a>"
                     })));
 
-                    var mediaElement = $("<div/>",{
-                        "class":"media",
+                    var mediaElement = $("<div/>", {
+                        "class": "media",
                     }).append(mediaLeft).append(bodyElement);
 
                     var commentElement = $("<div/>", {
@@ -173,21 +172,21 @@ function collapseComments(e) {
 }
 
 //二级回复
-function commentToCommentator(id,commentId) {
+function commentToCommentator(id, commentId) {
     console.log(id);
-    var inputBtn = $("#input-"+id);
-    var name = $("#secComment-"+commentId).html();
-    inputBtn.attr("value","回复 "+name+" :")
+    var inputBtn = $("#input-" + id);
+    var name = $("#secComment-" + commentId).html();
+    inputBtn.attr("value", "回复 " + name + " :")
 }
 
 //ajax.post
-function requestAjax(t,method,url, str, val) {
+function requestAjax(t, method, url, str, val) {
     var channelUrl = url;
     var json = "";
-    if(method == "get"){
-        url += "?" + toGetStr(str,val);
-    }else{
-        json = toJson(str,val);
+    if (method == "get") {
+        url += "?" + toGetStr(str, val);
+    } else {
+        json = toJson(str, val);
     }
     $.ajax({
         url: url,
@@ -197,40 +196,41 @@ function requestAjax(t,method,url, str, val) {
         data: json,
         success: function (rel) {
             if (rel.code == 200) {
-                showTip(rel.message,"success");
-            }else{
-                showTip(rel.message,"error");
-            };
-            if(t != null)
-                channelSetting(t,rel,channelUrl);
+                showTip(rel.message, "success");
+            } else {
+                showTip(rel.message, "error");
+            }
+            ;
+            if (t != null)
+                channelSetting(t, rel, channelUrl);
         }
     });
 }
 
-function toJson(str,val) {
-    str = ""+str;
-    val = ""+val;
+function toJson(str, val) {
+    str = "" + str;
+    val = "" + val;
     var strArray = str.split(",");
     var valArray = val.split(",");
     var json = "{";
-    for(k in strArray){
-        json += "'"+ strArray[k] +"':"+valArray[k]+",";
+    for (k in strArray) {
+        json += "'" + strArray[k] + "':" + valArray[k] + ",";
     }
-    json.substr(0,json.length - 1);
+    json.substr(0, json.length - 1);
     json = json += "}";
     return json;
 }
 
-function toGetStr(str,val) {
-    str = ""+str;
-    val = ""+val;
+function toGetStr(str, val) {
+    str = "" + str;
+    val = "" + val;
     var strArray = str.split(",");
     var valArray = val.split(",");
     var url = "";
-    for(k in strArray){
-        url += strArray[k]+"="+valArray[k]+"&";
+    for (k in strArray) {
+        url += strArray[k] + "=" + valArray[k] + "&";
     }
-    url = url.substr(0,url.length - 1);
+    url = url.substr(0, url.length - 1);
     return url;
 }
 
@@ -240,20 +240,25 @@ function toGetStr(str,val) {
  * @param rel
  * @param url
  */
-function channelSetting(t,rel,url) {
+function channelSetting(t, rel, url) {
 
     //点赞
-    if(url == "/likePost"){
+    if (url == "/likePost") {
         var count = $(t).text();
-        if(rel.code == 200){
-            $(t).text(parseInt(count)+1);
-        }else{
-            $(t).text(parseInt(count)-1);
+        if (rel.code == 200) {
+            $(t).text(parseInt(count) + 1);
+        } else {
+            $(t).text(parseInt(count) - 1);
         }
     }
 
     //删除帖子刷新页面
-    if(rel.code == 200 && url == '/question/delete'){
+    if (rel.code == 200 && url == '/question/delete') {
+        window.location.reload();
+    }
+
+    //收藏 addCollect removeCollect
+    if (rel.code == 200 && (url == '/removeCollection' || url == '/addCollection')) {
         window.location.reload();
     }
 }
@@ -264,7 +269,7 @@ function channelSetting(t,rel,url) {
  * @param title
  * @param tip
  */
-function setTipWindos(t,title,tip) {
+function setTipWindos(t, title, tip) {
 
     var url = $(t).data('url');
     var key = $(t).data('key');
@@ -272,18 +277,18 @@ function setTipWindos(t,title,tip) {
 
     $("#info_win").show();
 
-    if(t > 0){
+    if (t > 0) {
         $('#info_but').val(t);
-    }else{
+    } else {
         $('#info_but').val($(t).val());
     }
 
     $('#myModalLabel').html(title);
     $('#myModalContent').html(tip);
 
-   if(url != null) $('#info_but').data('url',url);
-   if(key != null) $('#info_but').data('key',key);
-   if(val != null) $('#info_but').data('val',val);
+    if (url != null) $('#info_but').data('url', url);
+    if (key != null) $('#info_but').data('key', key);
+    if (val != null) $('#info_but').data('val', val);
 }
 
 /**
@@ -294,7 +299,7 @@ function winByDetermine(t) {
     var url = $(t).data('url');
     var key = $(t).data('key');
     var val = $(t).data('val');
-    requestAjax(t,'get',url, key, val);
+    requestAjax(t, 'get', url, key, val);
 }
 
 // <div class="panel panel-default">
@@ -304,39 +309,40 @@ function winByDetermine(t) {
 //                         这个地图要TJ了！！！
 // </div>
 // </div>
-function addMessage(t,rel) {
+function addMessage(t, rel) {
     var id = $(t).id;
-    addMessage(id,rel);
+    addMessage(id, rel);
 }
-function addMessageById(id,rel) {
-    var t = $("#"+id);
-    var divId = "";
-    var html = "<div "+divId+" class=\"panel panel-default\">";
-        html+= "<div class=\"panel-heading\">";
-        html+= rel.sender+"说：";
-        html+= "</div>";
-        html+= "<div class=\"panel-body\">";
-        html+= rel.content;
-        html+= "</div>";
-        html+= "</div>";
 
-        t.html(t.html() + html);
+function addMessageById(id, rel) {
+    var t = $("#" + id);
+    var divId = "";
+    var html = "<div " + divId + " class=\"panel panel-default\">";
+    html += "<div class=\"panel-heading\">";
+    html += rel.sender + "说：";
+    html += "</div>";
+    html += "<div class=\"panel-body\">";
+    html += rel.content;
+    html += "</div>";
+    html += "</div>";
+
+    t.html(t.html() + html);
 }
 
 //{"code":200,"message":"操作成功","data":[{"id":1,"content":"测试一下哈哈~","sender":"管理员","gmt_create":0,"creator":0}]}
-function getMessage(id){
+function getMessage(id) {
     //刷新吐槽
     $.ajax({
-        url:"/message/list",
-        type : 'GET',
-        dataType : 'json',
-        timeout : 500000,
-        success:function (rel) {
-            if(rel.code == 200){
-                $("#"+id).html("");
+        url: "/message/list",
+        type: 'GET',
+        dataType: 'json',
+        timeout: 500000,
+        success: function (rel) {
+            if (rel.code == 200) {
+                $("#" + id).html("");
                 var list = rel.data;
-                for(k in list){
-                    addMessageById(id,list[k]);
+                for (k in list) {
+                    addMessageById(id, list[k]);
                 }
             }
         }
@@ -349,16 +355,16 @@ function sendMessage(id) {
     var from = $('#description')[0];
 
     editor.sync();
-    html=document.getElementById('description').value;//原生API
+    html = document.getElementById('description').value;//原生API
     $("#schtmlnr").val(html);//把KindEditor产生的baihtml代码放到schtmlnr里面，用于提交
 
-    if(editor.count('text') > 100){
-        showTip("字数超过限制，请适当删除部分内容","error");
+    if (editor.count('text') > 100) {
+        showTip("字数超过限制，请适当删除部分内容", "error");
         return;
     }
 
     $.ajax({
-        url: url ,
+        url: url,
         type: "POST",
         dataType: "json",
         data: $(fromId).serialize(),
@@ -366,10 +372,11 @@ function sendMessage(id) {
             if (rel.code == 200) {
                 getMessage(id);
                 editor.html("");
-                showTip(rel.message,"info");
-            }else{
-                showTip(rel.message,"error");
-            };
+                showTip(rel.message, "info");
+            } else {
+                showTip(rel.message, "error");
+            }
+            ;
         }
     });
 

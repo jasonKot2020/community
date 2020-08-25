@@ -6,7 +6,7 @@ public class JsonMessage {
      * 0001 登录成功
      */
     private static final int SUCCESS_CORD = 200;
-    private static final int ERROR_CORD = 301;
+    private static final int ERROR_CORD = 502;
     private static final String SUCCESS_MESSAGE = "操作成功";
     private static final String ERROR_MESSAGE = "操作失败";
 

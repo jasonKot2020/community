@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Error</title>
+    <title th:text="${title}">Error</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <script src="/js/jquery-3.3.1.js" type="application/javascript"></script>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -28,7 +28,7 @@
         <div class="jumbotron img-by-div">
             <div class="col-lg-1 col-md-12 col-sm-12 col-xs-12"></div>
             <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
-                <h1 style="color: #eb9316">出错啦~~</h1>
+                <h1 style="color: #eb9316" th:text="${title}"></h1>
                 <h2 style="color: whitesmoke" th:text="${'>>>'+message}"></h2>
                 <li class="btn-link"><a href="/index" role="button">回到首页</a></li>
             </div>

@@ -93,8 +93,8 @@
 
                     <li th:if="${session.user != null}" class="li">
                         <div class="col-lg-1 col-md-12 col-sm-12 col-xs-12">
-                            <button id="star" type="button" class="btn-link" th:value="${question.id}"  data-toggle="modal" onclick="">
-                                <span id="star_icon" class="glyphicon glyphicon-tags" style="color: #8c8c8c;" aria-hidden="true"></span>
+                            <button th:if="${question.getCollection() == 1}" id="star" type="button" class="btn-link" th:value="${question.id}"  data-toggle="modal" onclick="">
+                                <span id="star_icon" class="glyphicon glyphicon-tags" style="color: #eb9316;" aria-hidden="true"></span>
                             </button>
                         </div>
                     </li>
