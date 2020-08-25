@@ -27,7 +27,7 @@ public class IndexController {
                         @RequestParam(name = "page", defaultValue = "1") Integer page,
                         @RequestParam(name = "size", defaultValue = "5") Integer size) {
         User u = (User) request.getSession().getAttribute("user");
-        PaginationDTO pagination = questionService.list(u.getId(),page,size);
+        PaginationDTO pagination = questionService.list(u != null ? u.getId():null,page,size);
         if(pagination != null){
             for(QuestionDTO qt : pagination.getQuestions()){
                 if(qt.getTitle().length() > 50){

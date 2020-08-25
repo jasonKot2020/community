@@ -52,7 +52,7 @@ public class QuestionService {
             BeanUtils.copyProperties(question,questionDTO);
             questionDTO.setUser(user);
             //是否收藏
-            if(user != null)questionDTO.setCollection(collectionArticleMapper.check(accountId,question.getId(),0));
+            if(accountId != null)questionDTO.setCollection(collectionArticleMapper.check(accountId,question.getId(),0));
             questionDTOList.add(questionDTO);
         }
         paginationDTO.setQuestions(questionDTOList);
@@ -125,7 +125,7 @@ public class QuestionService {
         User user = userMapper.findById(question.getCreator());
         questionDTO.setUser(user);
         //是否收藏
-        if(user != null)questionDTO.setCollection(collectionArticleMapper.check(accountId,question.getId(),0));
+        if(accountId != null)questionDTO.setCollection(collectionArticleMapper.check(accountId,question.getId(),0));
         return questionDTO;
     }
 

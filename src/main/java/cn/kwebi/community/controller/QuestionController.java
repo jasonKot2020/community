@@ -39,7 +39,7 @@ public class QuestionController {
                            Model model){
         User user = (User) request.getSession().getAttribute("user");
 
-        QuestionDTO questionDTO = questionService.getById(user.getId(),id);
+        QuestionDTO questionDTO = questionService.getById(user != null ? user.getId() : null,id);
         if(user != null && questionDTO.getCreator().equals(user.getId())){
             commentService.updateLookStatus(id);
         }
