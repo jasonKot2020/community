@@ -50,7 +50,7 @@ public interface QuestionMapper {
     void deleteById(@Param(value = "acountId") Integer acountId,@Param(value = "id") Integer id);
 
     @Select("select * from(select * from (select * from user_like_post where account_Id = #{id}) p  " +
-            "left join (select * from question) q on p.article_id = q.id)t order by gmt_create desc,gmt_modified desc limit #{offset}, #{size} ")
+            "left join (select * from question) q on p.article_id = q.id)t group by id order by gmt_create desc,gmt_modified desc limit #{offset}, #{size} ")
     List<Question> listByLike(@Param(value = "id") Integer id,@Param(value = "offset") Integer offset,@Param(value = "size") Integer size);
 
     @Select("select count(1) from(select PARENT_ID as pid from(select * from (select * from user_like_post)p " +
