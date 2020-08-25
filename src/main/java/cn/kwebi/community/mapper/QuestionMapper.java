@@ -49,16 +49,16 @@ public interface QuestionMapper {
     @Update("delete from question where creator=#{acountId} AND id=#{id}")
     void deleteById(@Param(value = "acountId") Integer acountId,@Param(value = "id") Integer id);
 
-    @Select("select * from(select * from (select * from user_like_post) p  " +
-            "left join (select * from question) q on p.article_id = q.id)t where creator = #{id} order by gmt_create desc,gmt_modified desc limit #{offset}, #{size} ")
+    @Select("select * from(select * from (select * from user_like_post where account_Id = #{id}) p  " +
+            "left join (select * from question) q on p.article_id = q.id)t order by gmt_create desc,gmt_modified desc limit #{offset}, #{size} ")
     List<Question> listByLike(@Param(value = "id") Integer id,@Param(value = "offset") Integer offset,@Param(value = "size") Integer size);
 
     @Select("select count(1) from(select PARENT_ID as pid from(select * from (select * from user_like_post)p " +
             "left join (select * from comment)c on p.comment_id = c.ID)t where account_id = #{id} group by PARENT_ID)r")
     Integer likeCountByUserId(@Param(value = "id") Integer id);
 
-    @Select("select * from(select * from (select * from user_collection) p  " +
-            "left join (select * from question) q on p.article_id = q.id)t where creator = #{id} order by gmt_create desc,gmt_modified desc limit #{offset}, #{size} ")
+    @Select("select * from(select * from (select * from user_collection where account_Id = #{id}) p  " +
+            "left join (select * from question) q on p.article_id = q.id)t order by gmt_create desc,gmt_modified desc limit #{offset}, #{size} ")
     List<Question> listByCollection(@Param(value = "id") Integer id,@Param(value = "offset") Integer offset,@Param(value = "size") Integer size);
 
     @Select("select count(1) from user_collection where account_id=#{creator}")

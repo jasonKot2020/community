@@ -22,11 +22,11 @@ public class PublishController {
     public String edit(@PathVariable(name = "id") Integer id,
                        HttpServletRequest request,
                        Model model) {
-        QuestionDTO question = questionService.getById(id);
+        User u = (User) request.getSession().getAttribute("user");
+        QuestionDTO question = questionService.getById(u.getId(),id);
         if (id != null && question != null) {
             //判断是否为自己的贴子
-            QuestionDTO qt = questionService.getById(id);
-            User u = (User) request.getSession().getAttribute("user");
+            QuestionDTO qt = questionService.getById(u.getId(),id);
             if (!qt.getCreator().equals(u.getId())) {
                 return "redirect:/";
             }

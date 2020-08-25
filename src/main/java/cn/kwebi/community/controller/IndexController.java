@@ -2,6 +2,7 @@ package cn.kwebi.community.controller;
 
 import cn.kwebi.community.dto.PaginationDTO;
 import cn.kwebi.community.dto.QuestionDTO;
+import cn.kwebi.community.model.User;
 import cn.kwebi.community.service.QuestionService;
 import cn.kwebi.community.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,8 @@ public class IndexController {
                         Model model,
                         @RequestParam(name = "page", defaultValue = "1") Integer page,
                         @RequestParam(name = "size", defaultValue = "5") Integer size) {
-        PaginationDTO pagination = questionService.list(page,size);
+        User u = (User) request.getSession().getAttribute("user");
+        PaginationDTO pagination = questionService.list(u.getId(),page,size);
         if(pagination != null){
             for(QuestionDTO qt : pagination.getQuestions()){
                 if(qt.getTitle().length() > 50){

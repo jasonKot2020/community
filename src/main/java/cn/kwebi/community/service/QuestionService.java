@@ -33,7 +33,7 @@ public class QuestionService {
     @Autowired
     private CollectionArticleMapper collectionArticleMapper;
 
-    public PaginationDTO list(Integer page, Integer size) {
+    public PaginationDTO list(Integer accountId,Integer page, Integer size) {
         Integer totalCount = questionMapper.count();
         PaginationDTO paginationDTO = new PaginationDTO();
 
@@ -52,7 +52,7 @@ public class QuestionService {
             BeanUtils.copyProperties(question,questionDTO);
             questionDTO.setUser(user);
             //是否收藏
-            if(user != null)questionDTO.setCollection(collectionArticleMapper.check(user.getId(),question.getId(),0));
+            if(user != null)questionDTO.setCollection(collectionArticleMapper.check(accountId,question.getId(),0));
             questionDTOList.add(questionDTO);
         }
         paginationDTO.setQuestions(questionDTOList);
@@ -115,7 +115,7 @@ public class QuestionService {
     }
 
 
-    public QuestionDTO getById(Integer id) {
+    public QuestionDTO getById(Integer accountId,Integer id) {
         Question question = questionMapper.getById(id);
         if(question==null){
             throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
@@ -125,7 +125,7 @@ public class QuestionService {
         User user = userMapper.findById(question.getCreator());
         questionDTO.setUser(user);
         //是否收藏
-        if(user != null)questionDTO.setCollection(collectionArticleMapper.check(user.getId(),question.getId(),0));
+        if(user != null)questionDTO.setCollection(collectionArticleMapper.check(accountId,question.getId(),0));
         return questionDTO;
     }
 
