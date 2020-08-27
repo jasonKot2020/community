@@ -36,14 +36,15 @@ public class UserController {
                              @PathVariable String account) {
 
         //是否登录
-        if(request.getSession().getAttribute("user") == null){
+        User loginUser = (User) request.getSession().getAttribute("user");
+        if(loginUser == null){
             model.addAttribute("type",1);
             return "/login";
         }
 
         //用户是否存在
         User u = userMapper.findByAccount(account);
-        if(u == null)return "redirect:/";
+        if(u == null || !u.getAccount().equals(loginUser.getAccount()))return "redirect:/";
 
         return "user";
     }

@@ -318,10 +318,10 @@ function addMessageById(id, rel) {
     var t = $("#" + id);
     var divId = "";
     var html = "<div " + divId + " class=\"panel panel-default\">";
-    html += "<div class=\"panel-heading\">";
+    html += "<div class=\"panel-heading\" style=\"overflow: hidden;\">";
     html += rel.sender + "说：";
     html += "</div>";
-    html += "<div class=\"panel-body\">";
+    html += "<div class=\"panel-body\" style=\"overflow: hidden;\">";
     html += rel.content;
     html += "</div>";
     html += "</div>";

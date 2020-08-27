@@ -33,7 +33,7 @@ position:fixed;top:0px;left:0px;bottom:0px;width:100%;height:50px;background-col
             </form>
 
             <ul class="nav navbar-nav navbar-left">
-                <li class="dropdown" th:onclick="setTopUrl(0,'/')">
+                <li class="dropdown" th:onclick="setTopUrl(0,'/action')">
                     <a id="activeBut0" href="#" th:class="${activeType == 0 ? 'dropdown-toggle btn active' : 'dropdown-toggle btn'}"
                        class="dropdown-toggle btn " data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false" ><span class="glyphicon glyphicon-object-align-top"></span><span>首页</span></a>
@@ -69,7 +69,7 @@ position:fixed;top:0px;left:0px;bottom:0px;width:100%;height:50px;background-col
                 </li>
                 <li th:if="${session.user != null}"><div class="media-left">
                     <a href="#">
-                        <img th:src="${session.user.avatarUrl}" alt="" class="img-rounded media-object" style="margin: 3px">
+                        <img th:src="${session.user.avatarUrl}" alt="" th:name="${session.user.account}" class="img-rounded media-object" onclick="toAccount(this.name)" style="margin: 3px">
                     </a>
                 </div></li>
                 <!--GITHUB账号关联登录URL： https://github.com/login/oauth/authorize?client_id=7850db15468cc2a16d28&redirect_uri=http://localhost:8080/callback&scope=user&state=1-->

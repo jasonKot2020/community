@@ -26,7 +26,7 @@
 
         <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12 main-no-color-2"></div>
 
-        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 main-color">
+        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 main-color" style="border-radius: 12px;overflow: hidden;">
             <ol class="breadcrumb">
                 <li><a href="/">Home</a></li>
                 <li class="active">Me</li>
@@ -34,31 +34,53 @@
                 <!--<h2>-->
                     <!--<span class="glyphicon glyphicon-user" aria-hidden="true"></span> 个人资料-->
                 <!--</h2>-->
-            <div class="jumbotron">
-                <ul class="nav nav-pills" role="tablist">
-                    <li role="presentation" class="active"><a href="#">Level <span class="badge">0</span></a></li>
-                    <li role="presentation" class="active"><a href="#" th:text="${session.user.getName()}">-- <span class="badge">0</span></a></li>
-                </ul>
-                <hr>
-            </div>
 
-            <div class="panel panel-default">
-                <div class="panel-heading">个人信息</div>
-                <div class="panel-body">
-
+            <!--头像-->
+            <div style="width: 920px;height: 100px;float:left">
+                <div style="width: 107px;height: 105px;float:left">
+                    <img th:src="${session.user.avatarUrl}" th:name="${session.user.account}" class="img-rounded media-object" onclick="toAccount(this.name)"
+                         style="margin: 3px;width: 100px;height: 100px">
+                </div>
+                <!--名称与等级-->
+                <div style="width: 230px;height: 80px;float:left">
+                    <div style="width: 230px;height: 40px;float:left;"></div>
+                    <div style="width: 230px;height: 40px;float:left;">
+                        <ul class="nav nav-pills" role="tablist">
+                            <li role="presentation" class="active"><a href="#" th:text="${session.user.getName()}">-- <span class="badge">0</span></a></li>
+                            <li role="presentation" class="active"><a href="#">Level <span class="badge">0</span></a></li>
+                        </ul>
+                    </div>
+                    <div style="width: 230px;height: 5px;float:left"></div>
+                    <div style="width: 230px;height: 15px;float:left">
+                        编辑个人资料。。。。。。
+                    </div>
+                </div>
+                <div style="width: 200px;height: 105px;float:left;"></div>
+                <div style="width: 382px;height: 105px;float:left;border-radius: 12px;overflow: hidden;">
+                    <img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1654336705,3008227192&fm=26&gp=0.jpg" class="img-rounded media-object"
+                         style="margin: 3px;width: 100%;height: 100%;">
                 </div>
             </div>
 
-            <div class="panel panel-default">
-                <div class="panel-heading">历史</div>
-                <div class="panel-body">
+            <!--间隔-->
+            <div style="width: 920px;height: 15px;float:left;"></div>
 
-                </div>
+            <!--第二栏-->
+            <div style="background-color: whitesmoke; width: 920px;height: 300px;float:left;border-radius: 12px;overflow: hidden;">
             </div>
+
+            <!--间隔-->
+            <div style="width: 920px;height: 15px;float:left;"></div>
+
+            <!--第三栏-->
+            <div style="background-color: whitesmoke; width: 920px;height: 500px;float:left;border-radius: 12px;overflow: hidden;"></div>
 
             <hr>
         </div>
     </div>
 </div>
+
+<!--底部-->
+<div th:insert="~{navigation::info}"></div>
 </body>
 </html>

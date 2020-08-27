@@ -12,6 +12,8 @@
 </head>
 <script type="application/javascript">
     $(function () {
+        $("#hideText").hide();
+        $("#hidePass").hide();
         //请求公告
         $.ajax({
             url:"/getContent",
@@ -129,6 +131,8 @@
         <li id="type2" class="li" th:if="${type == 2}">
             <div class="col-lg-5 col-md-12 col-sm-12 col-xs-12 main-color">
                 <form id="regForm" action="/regAccount" method="post">
+                    <input id="hideText" type="text" maxlength="0">
+                    <input id="hidePass" type="password" maxlength="0">
                     <h2>
                         <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 注册
                     </h2>

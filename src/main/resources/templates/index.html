@@ -12,6 +12,7 @@
     <script charset="utf-8" src="/js/kindeditor/kindeditor-min.js"></script>
     <script charset="utf-8" src="/js/kindeditor/lang/zh_CN.js"></script>
 </head>
+<!-- 注意， 只需要引用 JS，无需引用任何 CSS ！！！-->
 <script type="application/javascript">
     window.setInterval(function () {
         getMessage('messageShow');
@@ -35,6 +36,7 @@
         editor = K.create('textarea[name="content"]', {
             resizeType : 0,
             allowPreviewEmoticons : false,
+            wellFormatMode:false,
             items : [
                 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
                 'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
@@ -57,12 +59,12 @@
 <div th:insert="~{navigation::head}"></div>
 
 <div class="main-no-color">
-    
+
 <!--顶部-->
 <div class="container-fluid main-no-color">
     <div class="row">
         <div class="col-lg-1 col-md-12 col-sm-12 col-xs-12"></div>
-        <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12 main-color img-by-div" style="height: 280px">
+        <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12 main-color img-by-div" style="height: 280px;border-radius: 12px;overflow: hidden;">
         </div>
     </div>
 </div>
@@ -70,7 +72,7 @@
 <div class="container-fluid main-no-color">
     <div class="row">
         <div class="col-lg-1 col-md-12 col-sm-12 col-xs-12"></div>
-        <div class="col-lg-7 col-md-12 col-sm-12 col-xs-12 main-color">
+        <div class="col-lg-7 col-md-12 col-sm-12 col-xs-12 main-color" style="border-radius: 12px;overflow: hidden;">
             <h2>
                 <span class="glyphicon glyphicon-list" aria-hidden="true"></span> 最新
             </h2>

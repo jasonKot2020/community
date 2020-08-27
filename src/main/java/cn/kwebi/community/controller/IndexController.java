@@ -42,4 +42,9 @@ public class IndexController {
         model.addAttribute("pagination", pagination);
         return "index";
     }
+
+    @GetMapping("/action")
+    public String index(HttpServletRequest request){
+        return "action";
+    }
 }
