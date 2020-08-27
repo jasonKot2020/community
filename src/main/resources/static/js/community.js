@@ -321,7 +321,7 @@ function addMessageById(id, rel) {
     html += "<div class=\"panel-heading\" style=\"overflow: hidden;\">";
     html += rel.sender + "说：";
     html += "</div>";
-    html += "<div class=\"panel-body\" style=\"overflow: hidden;\">";
+    html += "<div class=\"panel-body\" style=\"overflow: hidden;border-radius: 12px;\">";
     html += rel.content;
     html += "</div>";
     html += "</div>";
