@@ -381,3 +381,68 @@ function sendMessage(id) {
     });
 
 }
+
+/*
+头像配置
+ */
+var headImgData = [
+    {
+        id:"init",
+        url:"/imgs/init.jpg"
+    },
+    {
+        id:"head0",
+        url:"/imgs/head0.jpg"
+    },
+    {
+        id:"head1",
+        url:"/imgs/head1.jpg"
+    },
+    {
+        id:"head2",
+        url:"/imgs/head2.jpg"
+    },
+    {
+        id:"head3",
+        url:"/imgs/head3.jpg"
+    }
+];
+/*
+打开切换头像窗口
+ */
+function setHeadImg() {
+    $("#img_win").show();
+    $("#img_data").html("");
+    $("#img_but").data("url","");
+    for(k in headImgData){
+        addHeadImg(headImgData[k])
+    }
+}
+
+// <div style="width: 113px;height: 105px;float:left">
+//     <img src="" class="img-rounded media-object" onclick="clickHeadImg()"
+// style="margin: 3px;width: 100px;height: 100px">
+//     </div>
+/*
+设置头像
+ */
+function addHeadImg(data) {
+    var t = $("#img_data");
+    var html = "<div style=\"width: 113px;height: 105px;float:left\">";
+        html += "<img id=\""+data.id+"\" src=\".."+data.url+"\" data-url=\".."+data.url+"\" class=\"img-rounded media-object\" ";
+        html += "style=\"margin: 3px;width: 100px;height: 100px\" onclick=\"clickHeadImg('"+data.id+"')\">";
+        html += "</div>";
+        $(t).html($(t).html()+html);
+}
+
+/*
+选择头像
+ */
+function clickHeadImg(id) {
+    var url = $("#"+id).data("url");
+    for(k in headImgData){
+        $("#"+headImgData[k].id).removeClass("click-head-img");
+    }
+    $("#"+id).addClass("click-head-img");
+    $("#img_but").data("url",url);
+}

@@ -35,10 +35,31 @@
                     <!--<span class="glyphicon glyphicon-user" aria-hidden="true"></span> 个人资料-->
                 <!--</h2>-->
 
+            <!-- 头像切换 -->
+            <div id="img_win" style="display: none" class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" onclick="$('#img_win').hide()">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">切换头像</h4>
+                        <hr>
+                        <div id="img_data">
+                            <!--<div style="width: 113px;height: 105px;float:left">-->
+                                <!--<img th:src="${session.user.avatarUrl}" th:name="${session.user.account}" class="img-rounded media-object" onclick="setHeadImg()"-->
+                                     <!--style="margin: 3px;width: 100px;height: 100px">-->
+                            <!--</div>-->
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="img_but" type="button" class="btn btn-primary" onclick="winByDetermine(this)">确定</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="$('#img_win').hide()">关闭</button>
+                    </div>
+                </div>
+            </div>
+
             <!--头像-->
             <div style="width: 920px;height: 100px;float:left">
                 <div style="width: 107px;height: 105px;float:left">
-                    <img th:src="${session.user.avatarUrl}" th:name="${session.user.account}" class="img-rounded media-object" onclick="toAccount(this.name)"
+                    <img th:src="${session.user.avatarUrl}" th:name="${session.user.account}" class="img-rounded media-object" onclick="setHeadImg()"
                          style="margin: 3px;width: 100px;height: 100px">
                 </div>
                 <!--名称与等级-->
@@ -52,7 +73,7 @@
                     </div>
                     <div style="width: 230px;height: 5px;float:left"></div>
                     <div style="width: 230px;height: 15px;float:left">
-                        编辑个人资料。。。。。。
+                        &nbsp;<a onclick="setHeadImg()">头像</a>&nbsp;|&nbsp;<a>编辑个人资料</a>&nbsp;|&nbsp;<span>消息(0)</span>
                     </div>
                 </div>
                 <div style="width: 200px;height: 105px;float:left;"></div>
@@ -73,9 +94,11 @@
             <div style="width: 920px;height: 15px;float:left;"></div>
 
             <!--第三栏-->
-            <div style="background-color: whitesmoke; width: 920px;height: 500px;float:left;border-radius: 12px;overflow: hidden;"></div>
+            <div style="background-color: whitesmoke; width: 920px;height: 180px;float:left;border-radius: 12px;overflow: hidden;"></div>
 
             <hr>
+
+            <div style="width: 920px;height: 15px;float:left;"></div>
         </div>
     </div>
 </div>

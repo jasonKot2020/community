@@ -152,3 +152,11 @@ DIV背景图片
     background-repeat: no-repeat;
     background-image: url(../imgs/div.jpg);
 }
+
+/**
+选择头像图片
+ */
+.click-head-img{
+    padding: 5px 10px 10px 5px;
+    border-radius: 16px;
+}
