@@ -446,3 +446,32 @@ function clickHeadImg(id) {
     $("#"+id).addClass("click-head-img");
     $("#img_but").data("url",url);
 }
+
+/*
+提交头像
+ */
+function commitHeadImg(t) {
+    if($(t).data("url") == ""){
+        showTip("提交失败！还没有选择头像！", "error");
+        return;
+    }
+    var url = "/account/setAvatar?url="+$(t).data("url");
+    $.ajax({
+        url: url,
+        type: "GET",
+        dataType: "json",
+        data: "",
+        success: function (rel) {
+            if (rel.code == 200) {
+                $('#img_win').hide()
+                showTip(rel.message, "info");
+                window.setTimeout(function () {
+                    window.location.reload();
+                },500);
+            } else {
+                showTip("提交失败！", "error");
+            }
+            ;
+        }
+    });
+}

@@ -3,12 +3,11 @@ package cn.kwebi.community.controller;
 import cn.kwebi.community.mapper.UserMapper;
 import cn.kwebi.community.model.User;
 import cn.kwebi.community.service.UserService;
+import cn.kwebi.community.util.JsonMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -47,6 +46,15 @@ public class UserController {
         if(u == null || !u.getAccount().equals(loginUser.getAccount()))return "redirect:/";
 
         return "user";
+    }
+
+    @ResponseBody
+    @GetMapping("/setAvatar")
+    public  Object setAvatar(HttpServletRequest request, @RequestParam(value = "url")String url){
+        User u = (User) request.getSession().getAttribute("user");
+        u.setAvatarUrl(url);
+        userService.update(u);
+        return JsonMessage.success();
     }
 
 }

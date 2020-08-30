@@ -15,18 +15,16 @@
 <body>
 <div th:insert="~{navigation::nav}"></div>
 
-<!--Tip-->
-<div class="col-lg-5 col-md-12 col-sm-12 col-xs-12"></div>
-<div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
-    <div id="errorTip" class="alert alert-danger col-lg-9 col-md-12 col-sm-12 col-xs-12" style="display: none;"></div>
-</div>
-
 <div class="container-fluid">
     <div class="row">
 
-        <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12 main-no-color-2"></div>
+        <!--<div class="col-lg-2 col-md-12 col-sm-12 col-xs-12 main-no-color-2"></div>-->
 
-        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 main-color" style="border-radius: 12px;overflow: hidden;">
+        <!--<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 main-color" style="border-radius: 12px;overflow: hidden;">-->
+        <!--Tip-->
+        <div id="errorTip" class="alert alert-danger tl" style="display: none;width: 350px;height: 50px;margin-top: 0;margin-left: 40%"></div>
+
+        <div class="main-color" style="border-radius: 12px;overflow: hidden;width: 950px;margin-left:25%;">
             <ol class="breadcrumb">
                 <li><a href="/">Home</a></li>
                 <li class="active">Me</li>
@@ -36,7 +34,7 @@
                 <!--</h2>-->
 
             <!-- 头像切换 -->
-            <div id="img_win" style="display: none" class="modal-dialog" role="document">
+            <div id="img_win" style="display: none;margin-top: 0" class="modal-dialog tl" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" onclick="$('#img_win').hide()">&times;</span></button>
@@ -50,15 +48,15 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button id="img_but" type="button" class="btn btn-primary" onclick="winByDetermine(this)">确定</button>
+                        <button id="img_but" type="button" class="btn btn-primary" onclick="commitHeadImg(this)">提交</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal" onclick="$('#img_win').hide()">关闭</button>
                     </div>
                 </div>
             </div>
 
             <!--头像-->
-            <div style="width: 920px;height: 100px;float:left">
-                <div style="width: 107px;height: 105px;float:left">
+            <div style="width: 930px;height: 100px;float:left;margin-left:10px;">
+                <div style="width: 115px;height: 105px;float:left">
                     <img th:src="${session.user.avatarUrl}" th:name="${session.user.account}" class="img-rounded media-object" onclick="setHeadImg()"
                          style="margin: 3px;width: 100px;height: 100px">
                 </div>
@@ -73,11 +71,11 @@
                     </div>
                     <div style="width: 230px;height: 5px;float:left"></div>
                     <div style="width: 230px;height: 15px;float:left">
-                        &nbsp;<a onclick="setHeadImg()">头像</a>&nbsp;|&nbsp;<a>编辑个人资料</a>&nbsp;|&nbsp;<span>消息(0)</span>
+                        &nbsp;<a href="#" onclick="setHeadImg()">头像</a>&nbsp;|&nbsp;<a>编辑个人资料</a>&nbsp;|&nbsp;<span>消息(0)</span>
                     </div>
                 </div>
-                <div style="width: 200px;height: 105px;float:left;"></div>
-                <div style="width: 382px;height: 105px;float:left;border-radius: 12px;overflow: hidden;">
+                <div style="width: 190px;height: 105px;float:left;"></div>
+                <div style="width: 392px;height: 105px;float:left;border-radius: 12px;overflow: hidden;">
                     <img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1654336705,3008227192&fm=26&gp=0.jpg" class="img-rounded media-object"
                          style="margin: 3px;width: 100%;height: 100%;">
                 </div>
@@ -87,14 +85,14 @@
             <div style="width: 920px;height: 15px;float:left;"></div>
 
             <!--第二栏-->
-            <div style="background-color: whitesmoke; width: 920px;height: 300px;float:left;border-radius: 12px;overflow: hidden;">
+            <div style="background-color: whitesmoke; width: 930px;height: 300px;float:left;border-radius: 12px;overflow: hidden;margin-left:10px;">
             </div>
 
             <!--间隔-->
             <div style="width: 920px;height: 15px;float:left;"></div>
 
             <!--第三栏-->
-            <div style="background-color: whitesmoke; width: 920px;height: 180px;float:left;border-radius: 12px;overflow: hidden;"></div>
+            <div style="background-color: whitesmoke; width: 930px;height: 180px;float:left;border-radius: 12px;overflow: hidden;margin-left:10px;"></div>
 
             <hr>
 
