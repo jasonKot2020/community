@@ -68,6 +68,7 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <span id="content_text" th:text="${question.description}"></span>
                 </div>
+                <div class="userInfo" th:if="${question.user.remark != null && question.user.remark != ''}"><span class="glyphicon glyphicon-font" style="color: #2aabd2;">-签名：</span><span th:text="${question.user.remark}"></span></div>
                 <hr class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
                 <a th:href="@{'/publish/'+${question.id}}"
                    th:if="${session.user != null && session.user.id == question.creator}">
@@ -119,6 +120,7 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="userInfo" th:if="${comment.user.remark != null && comment.user.remark != ''}"><span class="glyphicon glyphicon-font" style="color: #2aabd2;">-签名：</span><span th:text="${comment.user.remark}"></span></div>
                     </div>
                 </div>
             </div>

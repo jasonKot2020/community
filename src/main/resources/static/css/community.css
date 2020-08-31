@@ -182,3 +182,26 @@ div浮空
     -o-transition: .5s ease-in-out;
 
 }
+
+.userInfo{
+    margin:15px 15px 15px 15px;
+    width: 265px;
+    height: 20px;
+    /*background-color: white;*/
+    font-size: 15px;
+}
+
+.userInfo-div-2{
+    background-color: whitesmoke;
+    width: 930px;
+    height: 300px;
+    float:left;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-left:10px;
+    border:2px solid #9acfea;
+}
+
+.user-info-input{
+    border: 2px solid powderblue;
+}

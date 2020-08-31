@@ -34,7 +34,7 @@
                 <!--</h2>-->
 
             <!-- 头像切换 -->
-            <div id="img_win" style="display: none;margin-top: 0" class="modal-dialog tl" role="document">
+            <div id="img_win" style="display: none;margin-top: 0;opacity:0.97;" class="modal-dialog tl" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" onclick="$('#img_win').hide()">&times;</span></button>
@@ -71,13 +71,13 @@
                     </div>
                     <div style="width: 230px;height: 5px;float:left"></div>
                     <div style="width: 230px;height: 15px;float:left">
-                        &nbsp;<a href="#" onclick="setHeadImg()">头像</a>&nbsp;|&nbsp;<a>编辑个人资料</a>&nbsp;|&nbsp;<span>消息(0)</span>
+                        &nbsp;<a class="glyphicon glyphicon-picture" href="#" onclick="setHeadImg()">头像</a>&nbsp;|&nbsp;<a href="#" class="glyphicon glyphicon-pencil" onclick="$('#user_info').hide();$('#user_info_edit').show();">编辑个人资料</a>&nbsp;|&nbsp;<span class="glyphicon glyphicon-bell">消息<a href="#">(0)</a></span>
                     </div>
                 </div>
                 <div style="width: 190px;height: 105px;float:left;"></div>
                 <div style="width: 392px;height: 105px;float:left;border-radius: 12px;overflow: hidden;">
-                    <img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1654336705,3008227192&fm=26&gp=0.jpg" class="img-rounded media-object"
-                         style="margin: 3px;width: 100%;height: 100%;">
+                    <!--<img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1654336705,3008227192&fm=26&gp=0.jpg" class="img-rounded media-object"-->
+                         <!--style="margin: 3px;width: 100%;height: 100%;">-->
                 </div>
             </div>
 
@@ -85,14 +85,61 @@
             <div style="width: 920px;height: 15px;float:left;"></div>
 
             <!--第二栏-->
-            <div style="background-color: whitesmoke; width: 930px;height: 300px;float:left;border-radius: 12px;overflow: hidden;margin-left:10px;">
+            <div class="userInfo-div-2" id="user_info">
+                <!--标题-->
+                <div style="width: 930px;height: 15px;float:left;margin-left:10px;"><h4 style="color: burlywood"><b>个人信息：</b></h4></div>
+                <!--内容-->
+                <div style="width: 910px;height: 260px;float:left;border-radius: 12px;overflow: hidden;margin-left:10px;margin-top: 15px">
+                    <div class="userInfo"><span class="glyphicon glyphicon-asterisk" style="color: #2aabd2">-昵称：</span><span th:text="${session.user.name}"></span></div>
+                    <div class="userInfo"><span class="glyphicon glyphicon-user" style="color: #2aabd2">-账号：</span><span th:text="${session.user.account}"></span></div>
+                    <div class="userInfo"><span class="glyphicon glyphicon-envelope" style="color: #2aabd2;">-邮箱：</span><span th:text="${(session.user.mail == null || session.user.mail == '') ? '未绑定' : session.user.mail}"></span></div>
+                    <div class="userInfo"><span class="glyphicon glyphicon-blackboard" style="color: #2aabd2;">-社交：</span><span th:text="${session.user.social}"></span></div>
+                    <div class="userInfo"><span class="glyphicon glyphicon-font" style="color: #2aabd2;">-签名：</span><span th:text="${session.user.remark}"></span></div>
+                    <div class="userInfo"><span class="glyphicon glyphicon-star" style="color: #2aabd2;">-勋章：</span><span></span></div>
+                </div>
+            </div>
+            <!--第二栏>>转编辑-->
+            <div class="userInfo-div-2" id="user_info_edit" style="display: none;">
+                <!--标题-->
+                <div style="width: 930px;height: 15px;float:left;margin-left:10px;"><h4 style="color: burlywood"><b>个人信息：</b></h4></div>
+                <!--内容-->
+                <div style="width: 910px;height: 260px;float:left;border-radius: 12px;overflow: hidden;margin-left:10px;margin-top: 15px;">
+                    <form action="/account/updateUserInfo" method="post" id="commit_user_info">
+                        <div class="userInfo"><span class="glyphicon glyphicon-asterisk" style="color: #2aabd2">-昵称：</span><input name="name" class="user-info-input" th:value="${session.user.name}"></input></div>
+                        <!--<div class="userInfo"><span class="glyphicon glyphicon-user" style="color: #2aabd2">-账号：</span><span th:text="${session.user.account}"></span></div>-->
+                        <div th:if="${session.user.mail == null || session.user.mail == ''}">
+                        <div class="userInfo"><span class="glyphicon glyphicon-envelope" style="color: #2aabd2;">-邮箱：</span><input name="mail" class="user-info-input"></input></div>
+                        <div class="userInfo">
+                            <div style="margin-left: 5px;"><b>验证码：</b></span><input name="code" class="user-info-input" style="width: 80px"></input><a href="#" style="margin-left: 15px">获取验证码</a>
+                            </div>
+                        </div>
+                        </div>
+                        <div th:if="${session.user.mail != null && session.user.mail != ''}">
+                            <div class="userInfo"><span class="glyphicon glyphicon-envelope" style="color: #2aabd2;">-邮箱：</span><span th:text="${session.user.mail}"></span></div>
+                        </div>
+                        <div class="userInfo"><span class="glyphicon glyphicon-blackboard" style="color: #2aabd2;">-社交：</span><input name="social" class="user-info-input" th:value="${session.user.social}"></input></div>
+                        <div class="userInfo"><span class="glyphicon glyphicon-font" style="color: #2aabd2;">-签名：</span><input name="remark" class="user-info-input" th:value="${session.user.remark}"></input></div>
+
+                        <!--保存、取消-->
+                        <div class="userInfo">
+                            <a href="#" class="glyphicon glyphicon-ok" style="color: forestgreen;margin-left: 145px" onclick="commitUserInfo()">提交</a>&nbsp;
+                            <a href="#" class="glyphicon glyphicon-remove" style="color: #a94442;" onclick="$('#user_info_edit').hide();$('#user_info').show();">取消</a>
+                        </div>
+                    </form>
+                </div>
             </div>
 
             <!--间隔-->
             <div style="width: 920px;height: 15px;float:left;"></div>
 
             <!--第三栏-->
-            <div style="background-color: whitesmoke; width: 930px;height: 180px;float:left;border-radius: 12px;overflow: hidden;margin-left:10px;"></div>
+            <div style="background-color: whitesmoke; width: 930px;height: 180px;float:left;border-radius: 12px;overflow: hidden;margin-left:10px;">
+                <!--标题-->
+                <div style="width: 930px;height: 15px;float:left;margin-left:10px;"><h4 style="color: burlywood"><b>我的应用：</b></h4></div>
+                <!--内容-->
+                <!--<div style="background-color: white; width: 910px;height: 140px;float:left;border-radius: 12px;overflow: hidden;margin-left:10px;margin-top: 15px">-->
+                <!--</div>-->
+            </div>
 
             <hr>
 

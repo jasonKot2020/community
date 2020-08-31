@@ -13,6 +13,10 @@ public class User {
     private Long gmtModified;
     private String avatarUrl;
 
+    private String mail;
+    private String remark;
+    private String social;
+
     public Integer getId() {
         return id;
     }
@@ -75,5 +79,29 @@ public class User {
 
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public String getSocial() {
+        return social;
+    }
+
+    public void setSocial(String social) {
+        this.social = social;
     }
 }

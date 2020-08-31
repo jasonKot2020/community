@@ -475,3 +475,29 @@ function commitHeadImg(t) {
         }
     });
 }
+
+/*
+提交个人资料
+ */
+function commitUserInfo() {
+    $.ajax({
+        url:"/account/updateUserInfo",
+        type:'post',
+        data:$('#commit_user_info').serialize(),
+        success:function(r){
+            var rel = strToJson(r);
+            if (rel.code == 200) {
+                window.location.reload();
+            } else {
+                showTip(rel.message, "error");
+            }
+        }
+    })
+}
+
+/*
+字符串toJson
+ */
+function strToJson(str) {
+    return JSON.parse(str);
+}
